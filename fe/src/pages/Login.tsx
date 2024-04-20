@@ -1,7 +1,34 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import Joi from "joi";
+import { joiResolver } from "@hookform/resolvers/joi";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { TUser } from "../interfaces/User";
+import instance from "../apis/index.api.ts";
 
+const userSchema = Joi.object({
+  email: Joi.string().required().email({ tlds: false }),
+  password: Joi.string().required().min(8),
+});
 const Login = () => {
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<TUser>({
+    resolver: joiResolver(userSchema),
+  });
+  const onSubmit = (user: TUser) => {
+    console.log(111111);
+    (async () => {
+      const { data } = await instance.post(`/user/login/`, user);
+      if (data && data !== "") {
+        await !window.confirm("Login successfully, switch login page?");
+        await navigate("/");
+      }
+    })();
+  };
   return (
     <section className="bg-white">
       <div className="grid grid-cols-1 lg:grid-cols-2">
@@ -120,7 +147,7 @@ const Login = () => {
                 Register now!
               </Link>
             </p>
-            <form action="#" method="POST" className="mt-8">
+            <form onSubmit={handleSubmit(onSubmit)} className="mt-8">
               <div className="space-y-5">
                 <div>
                   <label
@@ -151,6 +178,7 @@ const Login = () => {
                       type="email"
                       placeholder="Enter email to get started"
                       className="block w-full py-4 pl-10 pr-4 text-black placeholder-gray-500 transition-all duration-200 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:border-blue-600 focus:bg-white caret-blue-600"
+                      {...register("email", { required: true })}
                     />
                   </div>
                 </div>
@@ -193,6 +221,7 @@ const Login = () => {
                       type="password"
                       placeholder="Enter your password"
                       className="block w-full py-4 pl-10 pr-4 text-black placeholder-gray-500 transition-all duration-200 border border-gray-200 rounded-md bg-gray-50 focus:outline-none focus:border-blue-600 focus:bg-white caret-blue-600"
+                      {...register("password", { required: true })}
                     />
                   </div>
                 </div>
