@@ -1,12 +1,12 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const tableSchema = mongoose.Schema({
-  name: {
-    type: String,
-  },
-  number: {
-    type: Number,
-  },
+    name: {
+        type: String,
+    },
+    number: {
+        type: Number,
+    },
 });
 
-export default mongoose.model("tables", tableSchema);
+export default mongoose.model('tables', tableSchema);
