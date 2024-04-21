@@ -13,6 +13,9 @@ mongoose.connect(process.env.CONNECTION_STRING_MONGODB).then(() => {
 const port = process.env.PORT || 3000;
 
 import routerUser from "./routers/user.router.js";
+import routerTable from "./routers/table.router.js";
+
+app.use("/table", routerTable);
 app.use("/user", routerUser);
 
 app.listen(port, () => {

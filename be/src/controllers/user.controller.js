@@ -35,6 +35,7 @@ export const getUserById = (req, res) => {
 // [POST] : register
 export const register = async (req, res) => {
   const data = req.body;
+  data.role = 1;
   const userCheck = await User.findOne({ email: data.email }); // check if user is already registered
   if (userCheck) {
     res.json({ message: "Email đã được sử dụng" });
@@ -64,9 +65,9 @@ export const login = async (req, res) => {
     }
     const token = await Jwt.sign(
       { name: userCheck.name, id: userCheck.id },
-      userCheck.password,
+      userCheck.email,
       { expiresIn: "24h" }
-    ); // create token
+    );
     data.password = undefined;
     res.json({ message: "Đăng nhập thành công!", userCheck, token });
   } catch (error) {
