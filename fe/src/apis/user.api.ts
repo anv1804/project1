@@ -4,7 +4,7 @@ import instance from "./index.api.ts";
 export const getUsers = async () => {
   try {
     const { data } = await instance.get(`/user`);
-    // console.log(data);
+    console.log(data);
     return data;
   } catch (error) {
     console.log(error);

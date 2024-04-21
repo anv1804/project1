@@ -9,6 +9,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.6.8",
     "joi": "^17.12.3",
+    "jwt-decode": "^4.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.51.3",
@@ -43,7 +44,7 @@
     ]
   },
   "lint-staged": {
-    "fe/**/*.{js,tsx}" : "prettier --single-quote --trailing-comma all --tab-width 4 --write"
+    "fe/**/*.{js,tsx}": "prettier --single-quote --trailing-comma all --tab-width 4 --write"
   },
   "husky": {
     "hooks": {

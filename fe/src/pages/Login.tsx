@@ -14,7 +14,7 @@ const Login = () => {
   useEffect(() => {
     const token = sessionStorage.getItem("token");
     if (token) {
-      navigate(`/`);
+      navigate(`/home`);
     }
   }, []);
 
@@ -31,7 +31,7 @@ const Login = () => {
       sessionStorage.setItem("token", data.token);
       if (data && data !== "") {
         await !window.confirm("Login successfully, switch login page?");
-        await navigate("/");
+        await navigate("/home");
       }
     })();
   };
