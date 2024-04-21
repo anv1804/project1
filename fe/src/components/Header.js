@@ -1,51 +1,65 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
+import ReactDOM from "react-dom/client";
 const Header = () => {
+  const issetUser = `
+    <Link
+      to={'/login'}
+      className='flex items-center justify-center w-10 h-10 text-white bg-black rounded-full'
+    >
+      <div className='avatar online'>
+        <div className='w-10 rounded-full'>
+          <img src='https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg' />
+        </div>
+      </div>
+    </Link> `;
+  useEffect(() => {
+    const token = sessionStorage.getItem("token");
+    // const { decodedToken, isExpired, reEvaluateToken } = useJwt(token);
+    if (token) {
+      const root = ReactDOM.createRoot(document.getElementById("issetUser"));
+      root.render(issetUser);
+    }
+  }, []);
   return (
     <header>
-      <div class="bg-gray-100 border-b border-gray-200">
-        <div class="px-4 mx-auto sm:px-6 lg:px-8">
-          <nav class="relative flex items-center justify-between h-16 lg:h-20">
-            <div class="hidden lg:flex lg:items-center lg:space-x-10">
-              <a href="#" title="" class="text-base font-medium text-black">
-                {" "}
-                Features{" "}
-              </a>
-
-              <a href="#" title="" class="text-base font-medium text-black">
-                {" "}
-                Solutions{" "}
-              </a>
-
-              <a href="#" title="" class="text-base font-medium text-black">
-                {" "}
-                Resources{" "}
-              </a>
-
-              <a href="#" title="" class="text-base font-medium text-black">
-                {" "}
-                Pricing{" "}
-              </a>
+      <div className="bg-gray-100 border-b border-gray-200">
+        <div className="px-4 mx-auto sm:px-6 lg:px-8">
+          <nav className="relative flex items-center justify-between h-16 lg:h-20">
+            <div className="hidden lg:flex lg:items-center lg:space-x-10">
+              <Link to={`/`} className="text-base font-medium text-black">
+                Home
+              </Link>
+              <Link to={`/`} className="text-base font-medium text-black">
+                Community
+              </Link>
+              <Link to={`/`} className="text-base font-medium text-black">
+                About
+              </Link>
+              <Link
+                to={`/contact`}
+                className="text-base font-medium text-black"
+              >
+                Contact
+              </Link>
             </div>
-
-            <div class="lg:absolute lg:-translate-x-1/2 lg:inset-y-5 lg:left-1/2">
-              <div class="flex-shrink-0">
-                <a href="#" title="" class="flex">
+            <div className="lg:absolute lg:-translate-x-1/2 lg:inset-y-5 lg:left-1/2">
+              <div className="flex-shrink-0">
+                <a href="#" title="" className="flex">
                   <img
-                    class="w-auto h-8 lg:h-10"
+                    className="w-auto h-8 lg:h-10"
                     src="https://cdn.rareblocks.xyz/collection/celebration/images/logo.svg"
                     alt=""
                   />
                 </a>
               </div>
             </div>
-
             <button
               type="button"
-              class="flex items-center justify-center ml-auto text-white bg-black rounded-full w-9 h-9 lg:hidden"
+              className="flex items-center justify-center ml-auto text-white bg-black rounded-full w-9 h-9 lg:hidden"
             >
               <svg
-                class="w-5 h-5"
+                className="w-5 h-5"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -59,13 +73,12 @@ const Header = () => {
                 />
               </svg>
             </button>
-
             <button
               type="button"
-              class="inline-flex p-2 ml-5 text-black transition-all duration-200 rounded-md lg:hidden focus:bg-gray-100 hover:bg-gray-100"
+              className="inline-flex p-2 ml-5 text-black transition-all duration-200 rounded-md lg:hidden focus:bg-gray-100 hover:bg-gray-100"
             >
               <svg
-                class="w-6 h-6"
+                className="w-6 h-6"
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
                 viewBox="0 0 24 24"
@@ -79,134 +92,70 @@ const Header = () => {
                 />
               </svg>
             </button>
-
-            <div class="hidden lg:flex lg:items-center lg:space-x-10">
-              <a href="#" title="" class="text-base font-medium text-black">
-                {" "}
-                Sign up{" "}
-              </a>
-
-              <a href="#" title="" class="text-base font-medium text-black">
-                {" "}
-                Sign in{" "}
-              </a>
-
-              <a
-                href="#"
-                title=""
-                class="flex items-center justify-center w-10 h-10 text-white bg-black rounded-full"
-              >
-                <svg
-                  class="w-6 h-6"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                  />
-                </svg>
-              </a>
+            <div className="hidden lg:flex lg:items-center lg:space-x-10">
+              <Link to={`/login`} className="text-base font-medium text-black">
+                Sign in
+              </Link>
             </div>
+            <div id="issetUser"></div>
           </nav>
         </div>
       </div>
+      {/* 
+      <nav className="py-4 bg-white lg:hidden">
+        <div className="px-4 mx-auto sm:px-6 lg:px-8">
+          <ul className="menu menu-xs w-full">
+            <li>
+              <details open>
+                <summary>
+                  <p className="text-sm font-semibold tracking-widest text-gray-400 uppercase">
+                    Menu
+                  </p>
+                </summary>
+                <ul>
+                  <div className="flex flex-col space-y-2">
+                    <a
+                      href="#"
+                      title=""
+                      className="py-2 text-base font-medium text-black transition-all duration-200 focus:text-blue-600"
+                    >
+                      {" "}
+                      Features{" "}
+                    </a>
 
-      <nav class="py-4 bg-white lg:hidden">
-        <div class="px-4 mx-auto sm:px-6 lg:px-8">
-          <div class="flex items-center justify-between">
-            <p class="text-sm font-semibold tracking-widest text-gray-400 uppercase">
-              Menu
-            </p>
+                    <a
+                      href="#"
+                      title=""
+                      className="py-2 text-base font-medium text-black transition-all duration-200 focus:text-blue-600"
+                    >
+                      {" "}
+                      Solutions{" "}
+                    </a>
 
-            <button
-              type="button"
-              class="inline-flex p-2 text-black transition-all duration-200 rounded-md focus:bg-gray-100 hover:bg-gray-100"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="w-6 h-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-          </div>
+                    <a
+                      href="#"
+                      title=""
+                      className="py-2 text-base font-medium text-black transition-all duration-200 focus:text-blue-600"
+                    >
+                      {" "}
+                      Resources{" "}
+                    </a>
 
-          <div class="mt-6">
-            <div class="flex flex-col space-y-2">
-              <a
-                href="#"
-                title=""
-                class="py-2 text-base font-medium text-black transition-all duration-200 focus:text-blue-600"
-              >
-                {" "}
-                Features{" "}
-              </a>
-
-              <a
-                href="#"
-                title=""
-                class="py-2 text-base font-medium text-black transition-all duration-200 focus:text-blue-600"
-              >
-                {" "}
-                Solutions{" "}
-              </a>
-
-              <a
-                href="#"
-                title=""
-                class="py-2 text-base font-medium text-black transition-all duration-200 focus:text-blue-600"
-              >
-                {" "}
-                Resources{" "}
-              </a>
-
-              <a
-                href="#"
-                title=""
-                class="py-2 text-base font-medium text-black transition-all duration-200 focus:text-blue-600"
-              >
-                {" "}
-                Pricing{" "}
-              </a>
-            </div>
-
-            <hr class="my-4 border-gray-200" />
-
-            <div class="flex flex-col space-y-2">
-              <a
-                href="#"
-                title=""
-                class="py-2 text-base font-medium text-black transition-all duration-200 focus:text-blue-600"
-              >
-                {" "}
-                Sign up{" "}
-              </a>
-
-              <a
-                href="#"
-                title=""
-                class="py-2 text-base font-medium text-black transition-all duration-200 focus:text-blue-600"
-              >
-                {" "}
-                Sign in{" "}
-              </a>
-            </div>
-          </div>
+                    <a
+                      href="#"
+                      title=""
+                      className="py-2 text-base font-medium text-black transition-all duration-200 focus:text-blue-600"
+                    >
+                      {" "}
+                      Pricing{" "}
+                    </a>
+                  </div>
+                </ul>
+              </details>
+            </li>
+          </ul>
         </div>
-      </nav>
+      </nav> */}
     </header>
   );
 };

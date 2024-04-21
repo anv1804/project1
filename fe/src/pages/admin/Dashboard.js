@@ -1,56 +1,162 @@
-import React from "react";
-
+import React, { useEffect, useState } from "react";
+import { useJwt } from "react-jwt";
+import { isExpired, decodeToken } from "react-jwt";
+import { getUserById } from "../../apis/user.api.ts";
+import { useNavigate } from "react-router-dom";
 const Dashboard = () => {
+  const navigate = useNavigate();
+  useEffect(() => {
+    const token = sessionStorage.getItem("token");
+    // const { decodedToken, isExpired, reEvaluateToken } = useJwt(token);
+    const checkIdUser = decodeToken(token).id;
+    (async () => {
+      const data = await getUserById(checkIdUser);
+      console.log(data);
+      if (!data || data.role !== 3) {
+        navigate("/");
+      }
+    })();
+  }, []);
   return (
     <>
-      {/* Open the modal using document.getElementById('ID').showModal() method */}
-      <button
-        className="btn"
-        onClick={() => document.getElementById("my_modal_5").showModal()}
-      >
-        open modal
-      </button>
-      <dialog id="my_modal_5" className="modal modal-bottom sm:modal-middle">
-        <div className="modal-box">
-          <div class="w-full rounded-2xl bg-white">
-            <div class="flex flex-col gap-2 p-8">
-              <input
-                placeholder="Email"
-                class="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 focus:outline-none focus:ring-2 focus:ring-gray-700 focus:ring-offset-2 focus:ring-offset-gray-100"
-              />
-              <label class="flex cursor-pointer items-center justify-between p-1">
-                Accept terms of use
-                <div class="relative inline-block">
-                  <input
-                    type="checkbox"
-                    class="peer h-6 w-12 cursor-pointer appearance-none rounded-full border border-gray-300 bg-white checked:border-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900 focus-visible:ring-offset-2"
-                  />
-                  <span class="pointer-events-none absolute left-1 top-1 block h-4 w-4 rounded-full bg-gray-400 transition-all duration-200 peer-checked:left-7 peer-checked:bg-gray-900"></span>
+      <section className="py-10 bg-gray-50 sm:py-16 lg:py-24">
+        <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="max-w-xl mx-auto text-center py-6">
+            <div className="stats shadow">
+              <div className="stat place-items-center">
+                <div className="stat-title">Downloads</div>
+                <div className="stat-value">31K</div>
+                <div className="stat-desc">
+                  From January 1st to February 1st
                 </div>
-              </label>
-              <label class="flex cursor-pointer items-center justify-between p-1">
-                Submit to newsletter
-                <div class="relative inline-block">
-                  <input
-                    type="checkbox"
-                    class="peer h-6 w-12 cursor-pointer appearance-none rounded-full border border-gray-300 bg-white checked:border-gray-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-900 focus-visible:ring-offset-2"
-                  />
-                  <span class="pointer-events-none absolute left-1 top-1 block h-4 w-4 rounded-full bg-gray-400 transition-all duration-200 peer-checked:left-7 peer-checked:bg-gray-900"></span>
-                </div>
-              </label>
-              <button class="inline-block cursor-pointer rounded-md bg-gray-700 px-4 py-3.5 text-center text-sm font-semibold uppercase text-white transition duration-200 ease-in-out hover:bg-gray-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-700 focus-visible:ring-offset-2 active:scale-95">
-                Save
-              </button>
+              </div>
+
+              <div className="stat place-items-center">
+                <div className="stat-title">Users</div>
+                <div className="stat-value text-secondary">4,200</div>
+                <div className="stat-desc text-secondary">↗︎ 40 (2%)</div>
+              </div>
+
+              <div className="stat place-items-center">
+                <div className="stat-title">New Registers</div>
+                <div className="stat-value">1,200</div>
+                <div className="stat-desc">↘︎ 90 (14%)</div>
+              </div>
             </div>
+            <p className="text-sm font-semibold tracking-widest text-blue-600 uppercase py-6">
+              130+ Handcoded Blocks
+            </p>
           </div>
-          <div className="modal-action">
-            <form method="dialog">
-              {/* if there is a button in form, it will close the modal */}
-              <button className="btn">Close</button>
-            </form>
+
+          <div className="overflow-x-auto py-5">
+            <table className="table">
+              {/* head */}
+              <thead>
+                <tr>
+                  <th>
+                    <label>
+                      <input type="checkbox" className="checkbox" />
+                    </label>
+                  </th>
+                  <th>Name</th>
+                  <th>Job</th>
+                  <th>Favorite Color</th>
+                  <th className="text-center">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {/* row 1 */}
+                <tr>
+                  <th>
+                    <label>
+                      <input type="checkbox" className="checkbox" />
+                    </label>
+                  </th>
+                  <td>
+                    <div className="flex items-center gap-3">
+                      <div className="avatar">
+                        <div className="mask mask-squircle w-12 h-12">
+                          <img
+                            src="https://scontent.fhan5-11.fna.fbcdn.net/v/t39.30808-6/415502626_890946702726019_5323667668092281664_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeEpi10o13bLRiQAZseSF11zCYIr7-nYyzMJgivv6djLM39C0dPvqfIYAGJfjP5JDxDbiuRqMZ4yGAcqbAay1aXe&_nc_ohc=n1eRgXyYl4MAb5rfP_2&_nc_ht=scontent.fhan5-11.fna&oh=00_AfAA05ew8cyzbaTW52wYvWht2prbVcz29bUrzJvOK82izQ&oe=662962C5"
+                            alt="Avatar Tailwind CSS Component"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <div className="font-bold">Hart Hagerty</div>
+                        <div className="text-sm opacity-50">United States</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    Zemlak, Daniel and Leannon
+                    <br />
+                    <span className="badge badge-ghost badge-sm">
+                      Desktop Support Technician
+                    </span>
+                  </td>
+
+                  <td>ok</td>
+                  <th className="text-center">
+                    <button className="btn btn-x text-success px-2 hover:bg-success hover:text-white">
+                      <span className="loading loading-spinner hover:text-white"></span>
+                      Working
+                    </button>
+                  </th>
+                </tr>
+                {/* row 2 */}
+                <tr>
+                  <th>
+                    <label>
+                      <input type="checkbox" className="checkbox" />
+                    </label>
+                  </th>
+                  <td>
+                    <div className="flex items-center gap-3">
+                      <div className="avatar">
+                        <div className="mask mask-squircle w-12 h-12">
+                          <img
+                            src="https://scontent.fhan5-11.fna.fbcdn.net/v/t39.30808-6/415502626_890946702726019_5323667668092281664_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeEpi10o13bLRiQAZseSF11zCYIr7-nYyzMJgivv6djLM39C0dPvqfIYAGJfjP5JDxDbiuRqMZ4yGAcqbAay1aXe&_nc_ohc=n1eRgXyYl4MAb5rfP_2&_nc_ht=scontent.fhan5-11.fna&oh=00_AfAA05ew8cyzbaTW52wYvWht2prbVcz29bUrzJvOK82izQ&oe=662962C5"
+                            alt="Avatar Tailwind CSS Component"
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <div className="font-bold">Brice Swyre</div>
+                        <div className="text-sm opacity-50">China</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    Carroll Group
+                    <br />
+                    <span className="badge badge-ghost badge-sm">
+                      Tax Accountant
+                    </span>
+                  </td>
+                  <td>Red</td>
+                  <th className="text-center">
+                    <button className="btn btn-x text-error px-2 hover:bg-error hover:text-white">
+                      <span className="loading loading-spinner hover:text-white"></span>
+                      Working
+                    </button>
+                  </th>
+                </tr>
+              </tbody>
+              {/* foot */}
+              {/* <tfoot>
+                <tr>
+                  <th></th>
+                  <th>Name</th>
+                  <th>Job</th>
+                  <th>Favorite Color</th>
+                  <th></th>
+                </tr>
+              </tfoot> */}
+            </table>
           </div>
         </div>
-      </dialog>
+      </section>
     </>
   );
 };

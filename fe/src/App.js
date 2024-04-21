@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import "./App.css";
 import Header from "./components/Header";
 import { Route, Routes } from "react-router-dom";
@@ -7,14 +6,20 @@ import { getUsers } from "./apis/user.api.ts";
 import Register from "./pages/Register.tsx";
 import Login from "./pages/Login.tsx";
 import Dashboard from "./pages/admin/Dashboard.js";
+import TableList from "./pages/admin/TableList";
+import { useEffect, useState } from "react";
 
 function App() {
-  const data = getUsers();
-  console.log(data);
+  const [item, setItem] = useState([]);
+  useEffect(() => {
+    const data = getUsers();
+    // console.log(data);
+  }, []);
+
   return (
     <>
       <Header />
-      <div className="container py-5">
+      <div className="container">
         <Routes>
           <Route path={`/`}>
             <Route path={`/register`} element={<Register />}></Route>
@@ -22,6 +27,7 @@ function App() {
           </Route>
           <Route path={`/admin`}>
             <Route path={`/admin/`} element={<Dashboard />}></Route>
+            <Route path={`/admin/table`} element={<TableList />}></Route>
           </Route>
         </Routes>
       </div>

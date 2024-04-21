@@ -5,4 +5,6 @@ export interface TUser {
   avatar?: string;
   password: string;
   role: number;
+  status: boolean;
+  timeoff: number;
 }

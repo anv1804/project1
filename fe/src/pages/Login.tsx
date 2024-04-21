@@ -1,17 +1,23 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Joi from "joi";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { TUser } from "../interfaces/User";
 import instance from "../apis/index.api.ts";
-
 const userSchema = Joi.object({
   email: Joi.string().required().email({ tlds: false }),
   password: Joi.string().required().min(8),
 });
 const Login = () => {
   const navigate = useNavigate();
+  useEffect(() => {
+    const token = sessionStorage.getItem("token");
+    if (token) {
+      navigate(`/`);
+    }
+  }, []);
+
   const {
     register,
     handleSubmit,
@@ -20,9 +26,9 @@ const Login = () => {
     resolver: joiResolver(userSchema),
   });
   const onSubmit = (user: TUser) => {
-    console.log(111111);
     (async () => {
       const { data } = await instance.post(`/user/login/`, user);
+      sessionStorage.setItem("token", data.token);
       if (data && data !== "") {
         await !window.confirm("Login successfully, switch login page?");
         await navigate("/");
