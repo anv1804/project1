@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 
 const StopWatch = () => {
+
     const [timer, setTimer] = useState(0);
     const [laps, setLaps] = useState([]);
     const [running, setRunning] = useState(false);
@@ -11,6 +12,8 @@ const StopWatch = () => {
             clearInterval(countRef.current);
         } else {
             countRef.current = setInterval(() => {
+                const timer1 = new Date().getTime()
+                console.log(timer1);
                 setTimer((timer) => timer + 1);
             }, 1000);
         }
@@ -37,7 +40,7 @@ const StopWatch = () => {
         const getMinutes = `0${minutes % 60}`.slice(-2);
         const getHours = `0${Math.floor(timer / 3600)}`.slice(-2);
 
-        // return `${getHours}:${getMinutes}:${getSeconds}`
+        return `${getHours}:${getMinutes}:${getSeconds}`
 
     };
     const getSeconds = (timer) => {

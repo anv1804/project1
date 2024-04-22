@@ -7,8 +7,8 @@ const app = express();
 app.use(cors());
 
 app.use(express.json());
-mongoose.connect(process.env.CONNECTION_STRING_MONGODB).then(() => {
-    console.log("Connected!");
+                        mongoose.connect(process.env.CONNECTION_STRING_MONGODB).then(() => {
+                    console.log('Connected!');
 });
 const port = process.env.PORT || 3000;
 
@@ -19,5 +19,5 @@ app.use("/table", routerTable);
 app.use("/user", routerUser);
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
+  console.log(`Example app listening on port ${port}`);
 });
