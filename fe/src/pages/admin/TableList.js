@@ -5,6 +5,8 @@ import Table from "../../components/Table.js";
 const TableList = () => {
     const [listTables, setListTables] = useState([]);
 
+    // console.log(listTables);
+
     useEffect(() => {
       (async () => {
         const data = await getTables()
@@ -20,8 +22,8 @@ const TableList = () => {
                     <div className="grid grid-cols-1 gap-6 lg:gap-10 sm:grid-cols-2 md:grid-cols-3">
                       {listTables.map(i => (
                         <Table 
-                          name={i.name}
-                          status= {i.status}
+                          key={i._id}
+                          table={i}
                         />
                       ))}
                     </div>

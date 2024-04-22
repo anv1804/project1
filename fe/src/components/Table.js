@@ -1,11 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-const Table = (props) => {
-    // console.log(props);
+import CountDown from "./CountDown";
+import { updateTable } from "../apis/table.api.ts";
+
+const Table = ({ table }) => {
+
+    const [currentStatus , setcurrentStatus] = useState(table.status);
+
+    const handleClickBtn = async () => {
+
+        await updateTable(table.id , table);
+
+        setcurrentStatus(!currentStatus);
+    }
+
+
+    let [bg, border, btn] = ["white", "dark" , "success"];
+    if (currentStatus) {
+        [bg, border , btn] = ["sky", "sky" , "error"];
+    }
 
     return (
-        <div className="flex flex-col bg-white border border-gray-200 rounded-md">
+        <div
+            className={`flex flex-col bg-${bg}-300 border border-${border}-600 rounded-md`}
+        >
             <div className="flex flex-col justify-between flex-1 p-8">
                 <div className="flex-1">
                     <blockquote>
@@ -14,7 +33,7 @@ const Table = (props) => {
                             <div className="absolute top-3 right-20 group-hover:top-12 group-hover:-right-12 z-10 w-32 h-32 rounded-full group-hover:scale-150 group-hover:opacity-50 duration-500 bg-sky-800"></div>
                             <div className="absolute top-3 right-20 group-hover:top-12 group-hover:-right-12 z-10 w-24 h-24 rounded-full group-hover:scale-150 group-hover:opacity-50 duration-500 bg-sky-700"></div>
                             <div className="absolute top-3 right-20 group-hover:top-12 group-hover:-right-12 z-10 w-14 h-14 rounded-full group-hover:scale-150 group-hover:opacity-50 duration-500 bg-sky-600"></div>
-                            <p className="z-10">{props.name}</p>
+                            <p className="z-10">{table.name}</p>
                         </Link>
                     </blockquote>
                 </div>
@@ -69,13 +88,21 @@ const Table = (props) => {
                                 Devon Lane
                             </p>
                             <p className="text-base text-gray-500 truncate">
-                                President of Sales
+                                Staff
                             </p>
                         </div>
                     </div>
                 </div>
-                <button className="btn btn-active btn-accent text-white mt-3">Open table</button>
-            </div>
+                <div className="flex justify-between items-center gap-10 mt-5">
+                    {currentStatus && <CountDown />}
+                    <button 
+                        className={`btn btn-active btn-${btn} text-white flex-1`}
+                        onClick={handleClickBtn}
+                    >
+                        {currentStatus ? 'Close table' : 'Open table'}
+                    </button>
+                </div>
+            </div>  
         </div>
     );
 };
