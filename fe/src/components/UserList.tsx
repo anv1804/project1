@@ -12,7 +12,7 @@ const UserList = () => {
       setUsers(data);
     })();
   }, []);
-  console.log(typeof users);
+  //   console.log(typeof users);
 
   return (
     <>

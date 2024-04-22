@@ -15,7 +15,7 @@ const Dashboard = () => {
       const data = await getUsers()
       setUsers(data)
     })()
-    console.log(users);
+    // console.log(users);
 
     const token = sessionStorage.getItem("token");
     // const { decodedToken, isExpired, reEvaluateToken } = useJwt(token);
@@ -107,7 +107,7 @@ const Dashboard = () => {
                         </div>
                       </td>
                       <td>
-                        <p><StopWatch /></p>
+                        <StopWatch />
 
                         <br />
                         <span className="badge badge-ghost badge-sm">
