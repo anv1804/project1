@@ -7,6 +7,9 @@ const tableSchema = mongoose.Schema({
     number: {
         type: Number,
     },
+    status: {
+        type: Boolean
+    }
 });
 
 export default mongoose.model('tables', tableSchema);
