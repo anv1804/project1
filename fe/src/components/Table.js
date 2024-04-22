@@ -1,24 +1,37 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 import CountDown from "./CountDown";
-import { updateTable } from "../apis/table.api.ts";
+import { getTableById, updateTable } from "../apis/table.api.ts";
 
 const Table = ({ table }) => {
+    const [currentStatus, setcurrentStatus] = useState(table.status);
+    useEffect(() => {
 
-    const [currentStatus , setcurrentStatus] = useState(table.status);
-
+    }, [currentStatus]);
+    const id = table._id
     const handleClickBtn = async () => {
+        const status = await getTableById(id)
+        if (status.status == false) {
+            const data = {
+                "status": true
+            }
+            await updateTable(id, data);
+        } else {
+            const data = {
+                "status": false
+            }
+            await updateTable(id, data);
 
-        await updateTable(table.id , table);
+        }
 
         setcurrentStatus(!currentStatus);
     }
 
 
-    let [bg, border, btn] = ["white", "dark" , "success"];
+    let [bg, border, btn] = ["white", "dark", "success"];
     if (currentStatus) {
-        [bg, border , btn] = ["sky", "sky" , "error"];
+        [bg, border, btn] = ["sky", "sky", "error"];
     }
 
     return (
@@ -95,14 +108,14 @@ const Table = ({ table }) => {
                 </div>
                 <div className="flex justify-between items-center gap-10 mt-5">
                     {currentStatus && <CountDown />}
-                    <button 
+                    <button
                         className={`btn btn-active btn-${btn} text-white flex-1`}
                         onClick={handleClickBtn}
                     >
                         {currentStatus ? 'Close table' : 'Open table'}
                     </button>
                 </div>
-            </div>  
+            </div>
         </div>
     );
 };

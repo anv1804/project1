@@ -14,17 +14,17 @@ export const getTables = async () => {
 export const getTableById = async (id: string) => {
   try {
     const { data } = await instance.get(`/table/${id}`);
-    console.log(data);
+    // console.log(data);
     return data;
   } catch (error) {
     console.log(error);
   }
 };
 
-export const updateTable = async (id : string , table : TTable) => {
+export const updateTable = async (id: any, table: any) => {
   try {
-    const { data } = await instance.put(`/table/${id}` , table);
-    console.log(data);
+    const { data } = await instance.put(`/table/${id}`, table);
+    // console.log(data);
     return data;
   } catch (error) {
     console.log(error);

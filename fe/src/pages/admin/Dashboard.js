@@ -115,7 +115,9 @@ const Dashboard = () => {
                         </span>
                       </td>
 
-                      <td>{user.timeoff} Minutes</td>
+                      <td>
+                        <StopWatch />
+                      </td>
                       <th className="text-center">
                         <button className="btn btn-x text-success px-2 hover:bg-success hover:text-white">
                           <span className="loading loading-spinner hover:text-white"></span>
