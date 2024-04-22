@@ -4,7 +4,7 @@ import { TTable } from "../interfaces/Table";
 export const getTables = async () => {
   try {
     const { data } = await instance.get(`/table`);
-    console.log(data);
+    // console.log(data);
     return data;
   } catch (error) {
     console.log(error);
