@@ -1,19 +1,23 @@
 import React, { useEffect, useRef, useState } from 'react'
 
 const StopWatch = () => {
+    const hour0 = new Date().getHours()
+    const min0 = new Date().getMinutes()
+    const sec0 = new Date().getSeconds()
+    const timer0 = hour0 * 3600 + min0 * 60 + sec0
 
-    const [timer, setTimer] = useState(0);
+    const [timer, setTimer] = useState(timer0);
     const [laps, setLaps] = useState([]);
     const [running, setRunning] = useState(false);
     const countRef = useRef(null);
+
 
     const handleStartStop = () => {
         if (running) {
             clearInterval(countRef.current);
         } else {
             countRef.current = setInterval(() => {
-                const timer1 = new Date().getTime()
-                console.log(timer1);
+
                 setTimer((timer) => timer + 1);
             }, 1000);
         }
@@ -29,7 +33,7 @@ const StopWatch = () => {
     const handleReset = () => {
         clearInterval(countRef.current);
         setRunning(false);
-        setTimer(0);
+        setTimer(timer0);
         setLaps([]);
     };
     const formatTime = (timer) => {
@@ -47,7 +51,8 @@ const StopWatch = () => {
         return `0${timer % 60}`.slice(-2);
     }
     const getMinutes = (timer) => {
-        return `${Math.floor(timer / 60)}`;
+        const minutes = `${Math.floor(timer / 60)}`;
+        return `0${minutes % 60}`.slice(-2);
     }
     const getHours = (timer) => {
         return `0${Math.floor(timer / 3600)}`.slice(-2);
@@ -59,16 +64,14 @@ const StopWatch = () => {
     }, []);
     return (
         <div className="app ">
-            <div>{formatTime(timer)}</div>
+            {/* <div>{formatTime(timer)}</div> */}
             {
                 (
-                    <button className="btn btn-sm sm:btn-sm md:btn-md lg:btn-lg text-gray hover:text-white">
-                        <span className="countdown font-mono text-sm ">
-                            <span style={{ "--value": getHours(timer) }}></span>:
-                            <span style={{ "--value": getMinutes(timer) }}></span>:
-                            <span style={{ "--value": getSeconds(timer) }}></span>
-                        </span>
-                    </button>
+                    <span className="countdown font-mono text-sm ">
+                        <span style={{ "--value": getHours(timer) }}></span>:
+                        <span style={{ "--value": getMinutes(timer) }}></span>:
+                        <span style={{ "--value": getSeconds(timer) }}></span>
+                    </span>
                 )
 
             }
