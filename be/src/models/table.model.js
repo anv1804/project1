@@ -4,9 +4,6 @@ const tableSchema = mongoose.Schema({
     name: {
         type: String,
     },
-    number: {
-        type: Number,
-    },
     status: {
         type: Boolean
     }

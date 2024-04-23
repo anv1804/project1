@@ -24,16 +24,15 @@ export const getTableById = async (id: string) => {
 export const updateTable = async (id: any, table: any) => {
   try {
     const { data } = await instance.put(`/table/${id}`, table);
-    // console.log(data);
     return data;
   } catch (error) {
     console.log(error);
   }
 };
 
-export const register = async (user: TTable) => {
+export const createTable = async (table: TTable) => {
   try {
-    const { data } = await instance.post(`/user`, user);
+    const { data } = await instance.post(`/table`, table);
     console.log(data);
     return data;
   } catch (error) {

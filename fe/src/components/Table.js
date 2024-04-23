@@ -6,28 +6,15 @@ import { getTableById, updateTable } from "../apis/table.api.ts";
 
 const Table = ({ table }) => {
     const [currentStatus, setcurrentStatus] = useState(table.status);
-    useEffect(() => {
+    useEffect(() => {}, [currentStatus]);
 
-    }, [currentStatus]);
-    const id = table._id
     const handleClickBtn = async () => {
-        const status = await getTableById(id)
-        if (status.status == false) {
-            const data = {
-                "status": true
-            }
-            await updateTable(id, data);
-        } else {
-            const data = {
-                "status": false
-            }
-            await updateTable(id, data);
-
-        }
+        await updateTable(table._id, {
+            status: !currentStatus,
+        });
 
         setcurrentStatus(!currentStatus);
-    }
-
+    };
 
     let [bg, border, btn] = ["white", "dark", "success"];
     if (currentStatus) {
@@ -51,44 +38,7 @@ const Table = ({ table }) => {
                     </blockquote>
                 </div>
                 <div className="mt-8">
-                    <div className="grid grid-cols-2 gap-2">
-                        <div className="group w-full rounded-lg bg-[#673ab7] p-5 transition relative duration-300 cursor-pointer hover:translate-y-[3px] hover:shadow-[0_-8px_0px_0px_#2196f3]">
-                            <p className="text-white text-2xl">2000</p>
-                            <p className="text-white text-sm">lorem</p>
-                            <svg
-                                xmlSpace="preserve"
-                                style={{ enableBackground: "new 0 0 512 512" }}
-                                viewBox="0 0 512 512"
-                                y={0}
-                                x={0}
-                                height={36}
-                                width={36}
-                                xmlnsXlink="http://www.w3.org/1999/xlink"
-                                version="1.1"
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="group-hover:opacity-100 absolute right-[10%] top-[50%] translate-y-[-50%] opacity-20 transition group-hover:scale-110 duration-300"
-                            ></svg>
-                        </div>
-                        <div className="group w-full rounded-lg bg-[rgb(41,49,79)] p-5 transition relative duration-300 cursor-pointer hover:translate-y-[3px] hover:shadow-[0_-8px_0px_0px_rgb(244,67,54)]">
-                            <p className="text-white text-2xl">1999</p>
-                            <p className="text-white text-sm">lorem</p>
-                            <svg
-                                className="group-hover:opacity-100 absolute right-[10%] top-[50%] translate-y-[-50%] opacity-20 transition group-hover:scale-110 duration-300"
-                                xmlSpace="preserve"
-                                style={{ enableBackground: "new 0 0 512 512" }}
-                                viewBox="0 0 405.333 405.333"
-                                y={0}
-                                x={0}
-                                height={36}
-                                width={36}
-                                xmlnsXlink="http://www.w3.org/1999/xlink"
-                                version="1.1"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <g></g>
-                            </svg>
-                        </div>
-                    </div>
+
                     <div className="w-full h-0 mb-8 border-t-2 border-gray-200 border-dotted"></div>
                     <div className="flex items-center">
                         <img
@@ -112,7 +62,7 @@ const Table = ({ table }) => {
                         className={`btn btn-active btn-${btn} text-white flex-1`}
                         onClick={handleClickBtn}
                     >
-                        {currentStatus ? 'Close table' : 'Open table'}
+                        {currentStatus ? "Close table" : "Open table"}
                     </button>
                 </div>
             </div>
