@@ -1,9 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createTable, getTables } from "../../apis/table.api.ts";
 import Table from "../../components/Table.js";
+import { Pagination } from "../../components/Pagination.js";
 
 const TableList = () => {
     const [listTables, setListTables] = useState([]);
+    const [currentPage, setCurrentPage] = useState(0);
+    const countPage = Math.floor(listTables.length / 6);
 
     const elementTableName = useRef();
 
@@ -19,12 +22,18 @@ const TableList = () => {
 
         if (valueName.trim()) {
             const data = await createTable({ name: valueName, status: false });
-            document.querySelector('#btnCloseModalCreate').click();
-            setListTables([data , ...listTables]);
+            document.querySelector("#btnCloseModalCreate").click();
+            setListTables([data, ...listTables]);
+            setCurrentPage(0);
+            elementTableName.current.value = "";
             return;
         }
 
         elementTableName.current.focus();
+    };
+
+    const handlePagination = (e) => {
+        setCurrentPage(Number(e.target.value));
     };
 
     return (
@@ -46,7 +55,10 @@ const TableList = () => {
                         <div className="modal-box bg-white">
                             <form method="dialog">
                                 {/* if there is a button in form, it will close the modal */}
-                                <button id="btnCloseModalCreate" className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-black">
+                                <button
+                                    id="btnCloseModalCreate"
+                                    className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 text-black"
+                                >
                                     ✕
                                 </button>
                             </form>
@@ -72,38 +84,34 @@ const TableList = () => {
 
                     <div className="px-4 sm:px-6 lg:px-8 clear-end">
                         <div className="grid grid-cols-1 gap-6 lg:gap-10 sm:grid-cols-2 md:grid-cols-3">
-                            {listTables.map((i) => (
-                                <Table key={i._id} table={i} />
-                            ))}
+                            {listTables.map((item, index) => {
+                                let startPoint =
+                                    currentPage * 6 === 0
+                                        ? 0
+                                        : currentPage * 6 - 1;
+                                if (
+                                    startPoint <= index &&
+                                    startPoint + 5 >= index
+                                ) {
+                                    return (
+                                        <Table key={item._id} table={item} />
+                                    );
+                                }
+                                return null;
+                            })}
                         </div>
                     </div>
 
                     <div className="flex justify-center mt-6">
                         <div className="join border">
-                            <input
-                                className="join-item btn btn-square btn-ghost"
-                                type="radio"
-                                name="options"
-                                aria-label="1"
-                            />
-                            <input
-                                className="join-item btn btn-square btn-ghost"
-                                type="radio"
-                                name="options"
-                                aria-label="2"
-                            />
-                            <input
-                                className="join-item btn btn-square btn-ghost"
-                                type="radio"
-                                name="options"
-                                aria-label="3"
-                            />
-                            <input
-                                className="join-item btn btn-square btn-ghost"
-                                type="radio"
-                                name="options"
-                                aria-label="4"
-                            />
+                            {[...Array(countPage + 1)].map((e, i) => (
+                                <Pagination
+                                    key={i}
+                                    countPage={i}
+                                    onPagination={handlePagination}
+                                    currentPage={currentPage}
+                                />
+                            ))}
                         </div>
                     </div>
                 </div>
