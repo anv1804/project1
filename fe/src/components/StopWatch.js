@@ -12,6 +12,7 @@ const StopWatch = () => {
     const countRef = useRef(null);
 
 
+
     const handleStartStop = () => {
         if (running) {
             clearInterval(countRef.current);
@@ -35,26 +36,38 @@ const StopWatch = () => {
         setTimer(timer0);
         setLaps([]);
     };
+
+    // const convertTime = (seconds) => {
+    //     const hours = Math.floor(seconds / 3600); // Tìm số giờ
+    //     const minutes = Math.floor((seconds % 3600) / 60); // Tìm số phút còn lại
+    //     const secs = seconds % 60; // Tìm số giây còn lại
+
+    //     // Padding 0 nếu giá trị dưới 10, ví dụ: '08' thay vì '8'
+    //     const paddedHours = hours.toString().padStart(2, '0');
+    //     const paddedMinutes = minutes.toString().padStart(2, '0');
+    //     const paddedSeconds = secs.toString().padStart(2, '0');
+
+    //     return `${paddedHours}:${paddedMinutes}:${paddedSeconds}`;
+    // }
     const formatTime = (timer) => {
-        const getSeconds = `0${timer % 60
-            }`.slice(-2);
-        const minutes = `${Math.floor(timer / 60)
-            }`;
+        const getSeconds = `0${timer % 60}`.slice(-2);
+        const minutes = `${Math.floor(timer / 60)}`;
         const getMinutes = `0${minutes % 60}`.slice(-2);
         const getHours = `0${Math.floor(timer / 3600)}`.slice(-2);
 
-        return `${getHours}:${getMinutes}:${getSeconds}`
+        // return `${getHours}:${getMinutes}:${getSeconds}`
+        return Number(getHours) + Number(getMinutes) + Number(getSeconds)
 
     };
     const getSeconds = (timer) => {
-        return `0${timer % 60}`.slice(-2);
+        return `0${timer % 60} `.slice(-2);
     }
     const getMinutes = (timer) => {
-        const minutes = `${Math.floor(timer / 60)}`;
-        return `0${minutes % 60}`.slice(-2);
+        const minutes = `${Math.floor(timer / 60)} `;
+        return `0${minutes % 60} `.slice(-2);
     }
     const getHours = (timer) => {
-        return `0${Math.floor(timer / 3600)}`.slice(-2);
+        return `0${Math.floor(timer / 3600)} `.slice(-2);
     }
     useEffect(() => {
         return () => clearInterval(countRef.current);

@@ -20,6 +20,16 @@ export const getUserById = async (id: string) => {
     console.log(error);
   }
 };
+export const updateUsers = async (id: any, user: any) => {
+  try {
+    const { data } = await instance.get(`/user/${id}`, user);
+    // console.log(data);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const register = async (user: TUser) => {
   try {
     const { data } = await instance.post(`/user`, user);

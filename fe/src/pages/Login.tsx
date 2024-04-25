@@ -5,12 +5,19 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import { TUser } from "../interfaces/User";
 import instance from "../apis/index.api.ts";
+import { updateUsers } from "../apis/user.api.ts";
+import { jwtDecode } from "jwt-decode";
+
 const userSchema = Joi.object({
   email: Joi.string().required().email({ tlds: false }),
   password: Joi.string().required().min(8),
 });
 const Login = () => {
   const navigate = useNavigate();
+  const hour = new Date().getHours();
+  const min = new Date().getMinutes();
+  const sec = new Date().getSeconds();
+  const timer = hour * 3600 + min * 60 + sec;
   useEffect(() => {
     const token = sessionStorage.getItem("token");
     if (token) {
@@ -22,13 +29,15 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<TUser>({
+  } = useForm({
     resolver: joiResolver(userSchema),
   });
-  const onSubmit = (user: TUser) => {
+  const onSubmit = (user: any) => {
     (async () => {
       const { data } = await instance.post(`/user/login/`, user);
+
       sessionStorage.setItem("token", data.token);
+
       if (data && data !== "") {
         await !window.confirm("Login successfully, switch login page?");
         await navigate("/home");

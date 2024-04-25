@@ -39,6 +39,8 @@ export const register = async (req, res) => {
     data.status = false;
     data.countWork = 0;
     data.countRest = 0;
+    data.timeRest = 0;
+    data.timeWork = 0;
     data.avatar = "https://picsum.photos/200"
     const userCheck = await User.findOne({ email: data.email }); // check if user is already registered
     if (userCheck) {
@@ -75,6 +77,7 @@ export const login = async (req, res) => {
             { expiresIn: '24h' },
         );
         data.password = undefined;
+
         res.json({ message: 'Đăng nhập thành công!', userCheck, token });
     } catch (error) {
         res.json(error);

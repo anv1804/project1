@@ -10,8 +10,8 @@ const UserWorkingList = () => {
   useEffect(() => {
     (async () => {
       const data = await getUsers()
-      const dataTable = await getTables()
-      console.log(dataTable);
+      // const dataTable = await getTables()
+      // console.log(dataTable);
       setUsers(data)
 
     })()

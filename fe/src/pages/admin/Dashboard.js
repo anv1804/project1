@@ -10,6 +10,8 @@ import UserRestingList from "../../components/UserRestingList.js";
 import UserWaitingList from "../../components/UserWaitingList.js";
 
 const Dashboard = () => {
+  const time = new Date()
+  // console.log(time);
   const [users, setUsers] = useState([])
   const navigate = useNavigate();
 
