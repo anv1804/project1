@@ -21,7 +21,7 @@ const Register = () => {
   } = useForm<TUser>({
     resolver: joiResolver(userSchema),
   });
-  const onSubmit = (user: TUser) => {
+  const onSubmit = (user: any) => {
     (async () => {
       const { data } = await instance.post(`/user/register/`, user);
       if (data && data !== "") {

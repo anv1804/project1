@@ -6,12 +6,13 @@ import { getTableById, updateTable } from "../apis/table.api.ts";
 
 const Table = ({ table }) => {
     const [currentStatus, setcurrentStatus] = useState(table.status);
-    useEffect(() => {}, [currentStatus]);
+    useEffect(() => { }, [currentStatus]);
 
     const handleClickBtn = async () => {
         await updateTable(table._id, {
             status: !currentStatus,
         });
+
 
         setcurrentStatus(!currentStatus);
     };

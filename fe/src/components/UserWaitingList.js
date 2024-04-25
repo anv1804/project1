@@ -44,8 +44,8 @@ const UserWaitingList = () => {
                                             <div className="avatar">
                                                 <div className="mask mask-squircle w-12 h-12">
                                                     <img
-                                                        src="https://scontent.fhan5-11.fna.fbcdn.net/v/t39.30808-6/415502626_890946702726019_5323667668092281664_n.jpg?_nc_cat=100&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeEpi10o13bLRiQAZseSF11zCYIr7-nYyzMJgivv6djLM39C0dPvqfIYAGJfjP5JDxDbiuRqMZ4yGAcqbAay1aXe&_nc_ohc=n1eRgXyYl4MAb5rfP_2&_nc_ht=scontent.fhan5-11.fna&oh=00_AfAA05ew8cyzbaTW52wYvWht2prbVcz29bUrzJvOK82izQ&oe=662962C5"
-                                                        alt="Avatar Tailwind CSS Component"
+                                                        src={item.avatar}
+                                                        alt={item.fullname}
                                                     />
                                                 </div>
                                             </div>

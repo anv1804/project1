@@ -17,7 +17,6 @@ const StopWatch = () => {
             clearInterval(countRef.current);
         } else {
             countRef.current = setInterval(() => {
-
                 setTimer((timer) => timer + 1);
             }, 1000);
         }
@@ -57,8 +56,6 @@ const StopWatch = () => {
     const getHours = (timer) => {
         return `0${Math.floor(timer / 3600)}`.slice(-2);
     }
-
-
     useEffect(() => {
         return () => clearInterval(countRef.current);
     }, []);
@@ -75,9 +72,9 @@ const StopWatch = () => {
                 )
 
             }
-            <button className="btn btn-success btn-sm text-white mx-1" onClick={handleStartStop}>{running ? 'Stop' : 'Start'}</button>
+            {/* <button className="btn btn-success btn-sm text-white mx-1" onClick={handleStartStop}>{running ? 'Stop' : 'Start'}</button> */}
             {/* <button className="btn btn-primary text-white" onClick={handleLap}>Lap</button> */}
-            <button className="btn btn-error btn-sm text-white" onClick={handleReset} >Reset</button>
+            {/* <button className="btn btn-error btn-sm text-white" onClick={handleReset} >Reset</button> */}
             <ul>
                 {laps.map((lap, index) => (
                     <li key={index}>Lap {index + 1}: {formatTime(lap)}</li>
