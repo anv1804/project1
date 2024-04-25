@@ -7,18 +7,30 @@ const userSchema = mongoose.Schema({
     email: {
         type: String,
     },
-    numberphone: {
+    password: {
         type: String,
     },
     avatar: {
         type: String,
     },
-    password: {
-        type: String,
+    countWork: {
+        type: Number,
+    },
+    countRest: {
+        type: Number
+    },
+    timeWork: {
+        type: Number
+    },
+    timeRest: {
+        type: Number
+    },
+    status: {
+        type: Boolean
     },
     role: {
         type: Number,
-    },
+    }
 });
 
 export default mongoose.model('users', userSchema);

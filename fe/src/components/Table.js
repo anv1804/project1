@@ -1,30 +1,36 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 import CountDown from "./CountDown";
-import { getTableById, updateTable } from "../apis/table.api.ts";
+import { updateTable } from "../apis/table.api.ts";
 
-const Table = ({ table }) => {
+const Table = ({ table, mobile = false, onMobile = () => { } }) => {
     const [currentStatus, setcurrentStatus] = useState(table.status);
-    useEffect(() => { }, [currentStatus]);
 
-    const handleClickBtn = async () => {
+    const handleClickBtn = async (e) => {
         await updateTable(table._id, {
             status: !currentStatus,
         });
 
+        if (mobile) {
+            onMobile(e, table._id);
+            return;
+        }
 
         setcurrentStatus(!currentStatus);
     };
 
-    let [bg, border, btn] = ["white", "dark", "success"];
+    let [bg, border, btn] = ["bg-white-300", "border-dark-600", "success"];
     if (currentStatus) {
-        [bg, border, btn] = ["sky", "sky", "error"];
+        [bg, border, btn] = ["bg-sky-300", "border-sky-600", "error"];
+    }
+    if (mobile) {
+        [bg, border, btn] = ["", "", "error"];
     }
 
     return (
         <div
-            className={`flex flex-col bg-${bg}-300 border border-${border}-600 rounded-md`}
+            className={`flex flex-col ${bg} ${mobile ? "" : "border"} ${border} rounded-md`}
         >
             <div className="flex flex-col justify-between flex-1 p-8">
                 <div className="flex-1">
@@ -39,7 +45,6 @@ const Table = ({ table }) => {
                     </blockquote>
                 </div>
                 <div className="mt-8">
-
                     <div className="w-full h-0 mb-8 border-t-2 border-gray-200 border-dotted"></div>
                     <div className="flex items-center">
                         <img
@@ -61,7 +66,7 @@ const Table = ({ table }) => {
                     {currentStatus && <CountDown />}
                     <button
                         className={`btn btn-active btn-${btn} text-white flex-1`}
-                        onClick={handleClickBtn}
+                        onClick={e => handleClickBtn(e)}
                     >
                         {currentStatus ? "Close table" : "Open table"}
                     </button>

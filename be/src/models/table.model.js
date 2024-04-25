@@ -6,6 +6,13 @@ const tableSchema = mongoose.Schema({
     },
     status: {
         type: Boolean
+    },
+    isset: {
+        type: Boolean
+    },
+    userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "users",
     }
 });
 

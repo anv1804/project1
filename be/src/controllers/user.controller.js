@@ -36,6 +36,10 @@ export const getUserById = (req, res) => {
 export const register = async (req, res) => {
     const data = req.body;
     data.role = 1;
+    data.status = false;
+    data.countWork = 0;
+    data.countRest = 0;
+    data.avatar = "https://picsum.photos/200"
     const userCheck = await User.findOne({ email: data.email }); // check if user is already registered
     if (userCheck) {
         res.json({ message: 'Email đã được sử dụng' });

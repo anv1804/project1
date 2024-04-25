@@ -1,7 +1,8 @@
 import Table from '../models/table.model.js';
+import userId from '../models/user.model.js'
 // [GET] : get all table
 export const getTables = (req, res) => {
-    Table.find()
+    Table.find().populate('userId')
         .then((data) => {
             if (data) {
                 res.json(data);

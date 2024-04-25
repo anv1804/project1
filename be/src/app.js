@@ -7,14 +7,16 @@ const app = express();
 app.use(cors());
 
 app.use(express.json());
-                        mongoose.connect(process.env.CONNECTION_STRING_MONGODB).then(() => {
-                    console.log('Connected!');
+mongoose.connect(process.env.CONNECTION_STRING_MONGODB).then(() => {
+  console.log('Connected!');
 });
 const port = process.env.PORT || 3000;
 
 import routerUser from "./routers/user.router.js";
 import routerTable from "./routers/table.router.js";
+import routerDivision from "./routers/division.router.js";
 
+app.use("/division", routerDivision);
 app.use("/table", routerTable);
 app.use("/user", routerUser);
 
