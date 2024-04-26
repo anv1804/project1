@@ -22,7 +22,7 @@ export const getUserById = async (id: string) => {
 };
 export const updateUsers = async (id: any, user: any) => {
   try {
-    const { data } = await instance.get(`/user/${id}`, user);
+    const { data } = await instance.put(`/user/${id}`, user);
     // console.log(data);
     return data;
   } catch (error) {

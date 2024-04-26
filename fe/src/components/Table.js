@@ -3,15 +3,25 @@ import { Link } from "react-router-dom";
 
 import CountDown from "./CountDown";
 import { updateTable } from "../apis/table.api.ts";
+import instance from "../apis/index.api.ts";
+import { updateUsers } from "../apis/user.api.ts";
 
 const Table = ({ table, mobile = false, onMobile = () => { } }) => {
     const [currentStatus, setcurrentStatus] = useState(table.status);
 
     const handleClickBtn = async (e) => {
-        await updateTable(table._id, {
-            status: !currentStatus,
-        });
+        const { data } = await instance.get('/division/user')
+        console.log(data);
+        // if (data && data !== "" && data !== undefined && data !== null) {
+        //     const userId = data[0]._id;
+        //     const userStatus = data[0].status;
+        //     console.log(userId);
+        //     console.log(!userStatus);
+        //     console.log(data);
+        //     await updateUsers(userId, { status: !userStatus })
+        // }
 
+        await updateTable(table._id, { status: !currentStatus });
         if (mobile) {
             onMobile(e, table._id);
             return;

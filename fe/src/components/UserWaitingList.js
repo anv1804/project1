@@ -36,10 +36,9 @@ const UserWaitingList = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {/* row 1 */}
                         {
                             arrUser.map((item) => (
-                                <tr key={item.id} className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                                <tr key={Math.random()} className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                                     <td>
                                         <div className="flex items-center gap-3">
                                             <div className="avatar">
@@ -52,7 +51,7 @@ const UserWaitingList = () => {
                                             </div>
                                         </div>
                                     </td>
-                                    <td >
+                                    <td>
                                         <div>
                                             <div className="font-bold">{item.fullname}</div>
                                             <div className="text-sm opacity-50">Staff</div>
@@ -66,13 +65,10 @@ const UserWaitingList = () => {
                                     <td style={{ textAlign: "center" }}>
                                         <StopWatch />
                                     </td>
-
                                 </tr>
                             ))
                         }
-
                     </tbody>
-                    {/* foot */}
                     <tfoot>
                         <tr>
                             <th>Avatar</th>
@@ -84,9 +80,7 @@ const UserWaitingList = () => {
 
                 </table>
             </div>
-        </>
-
-    );
+        </>)
 };
 
 export default UserWaitingList;
