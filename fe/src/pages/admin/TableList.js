@@ -1,13 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
+
 import { createTable, getTables } from "../../apis/table.api.ts";
 import Table from "../../components/Table.js";
 import { Pagination } from "../../components/Pagination.js";
 import { TableMobile } from "../../components/TableMobile.js";
+import { SearchTable } from "../../components/SearchTable.js";
 
 const TableList = () => {
     const [listTables, setListTables] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [mobile, setMobile] = useState(false);
+    const [renderResult , setRenderResult] = useState(0);
 
     const countPage = Math.floor(listTables.length / 6);
 
@@ -18,13 +21,24 @@ const TableList = () => {
             const data = await getTables();
             setListTables(data);
         })();
+    }, [renderResult]);
 
+    useEffect(() => {
         if (window.innerWidth > 480) {
             setMobile(false);
         } else {
             setMobile(true);
         }
     }, [currentPage]);
+
+    const handleShowSearchResult = (searchResult) => {
+        setListTables([...searchResult]);
+        setCurrentPage(0);
+    };
+
+    const handleRender = () => {
+        setRenderResult(Math.random(1000));
+    }
 
     const handleCreateTable = async () => {
         let valueName = elementTableName.current.value;
@@ -61,25 +75,12 @@ const TableList = () => {
                 <div className="max-w-7xl mx-auto">
                     <div className="flex max-sm:flex-col max-sm:px-4 max-sm:gap-5 max-sm:items-center justify-between">
                         <p className="md:px-24"></p>
-                        <label className="input input-primary bg-white flex items-center gap-2">
-                            <input
-                                type="text"
-                                className="grow pr-14 text-black"
-                                placeholder="Search"
+                        <div>
+                            <SearchTable
+                                onShowSearchResult={handleShowSearchResult}
+                                onRenderResult={handleRender}
                             />
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 16 16"
-                                fill="currentColor"
-                                className="w-5 h-5 text-black"
-                            >
-                                <path
-                                    fillRule="evenodd"
-                                    d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-                                    clipRule="evenodd"
-                                />
-                            </svg>
-                        </label>
+                        </div>
                         <button
                             className="btn btn-success text-white mr-4 mb-8 sm:mx-6 lg:mx-8 float-end"
                             onClick={() =>

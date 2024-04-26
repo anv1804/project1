@@ -24,7 +24,7 @@ export const ModalComfirmTable = ({id}) => {
                                 ></path>
                             </svg>
                             <span className="text-black font-bold">
-                                we use cookies for no reason.
+                                Are you sure about that?
                             </span>
                         </div>
                         <div className="flex gap-4">

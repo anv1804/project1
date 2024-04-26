@@ -31,6 +31,26 @@ export const getTableById = (req, res) => {
     }
 };
 
+export const getTableByName = (req, res) => {
+    const name = req.params.name;
+    if (name) {
+        Table.find({
+            '$or' : [
+                {name : {$regex: name}}
+            ]
+        })
+            .then((data) => {
+                res.json(data);
+            })
+            .catch((err) => {
+                res.json(err);
+            });
+
+    } else {
+        res.json({ message: 'Không tìm thấy name bàn' });
+    }
+};
+
 // [POST] : add new table
 export const addTable = (req, res) => {
     const data = req.body;
