@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { updateTable } from "../apis/table.api.ts";
 import { ModalDetailTable } from "./ModalDetailTable.js";
+import { ModalComfirmTable } from "./ModalComfirmTable.js";
 
 export const TableMobile = ({ table }) => {
     const [currentStatus, setcurrentStatus] = useState(table.status);
 
     const handleClickBtn = async () => {
-        let data = await updateTable(table._id, {
+        await updateTable(table._id, {
             status: !currentStatus,
         });
         table.status = !currentStatus;
@@ -18,10 +19,13 @@ export const TableMobile = ({ table }) => {
         [bg, border] = ["bg-sky-300", "border-sky-600"];
     }
 
-    const handleMobile = (e , id) => {
-        e.target.closest('.modal').querySelector(`.modal-backdrop button`).click();
+    const handleMobile = (e, id) => {
+        e.target
+            .closest(".modal")
+            .querySelector(`.modal-backdrop button`)
+            .click();
         setcurrentStatus(!currentStatus);
-    }
+    };
 
     return (
         <>
@@ -31,7 +35,28 @@ export const TableMobile = ({ table }) => {
                     if (currentStatus) {
                         document.getElementById(table._id).showModal();
                     } else {
-                        handleClickBtn();
+                        const modal = document.getElementById(
+                            `${table._id + "1"}`
+                        );
+
+                        modal.showModal();
+
+                        modal
+                            .querySelector("#deny")
+                            .addEventListener("click", () => {
+                                modal
+                                    .querySelector(".modal-backdrop button")
+                                    .click();
+                            });
+
+                        modal
+                            .querySelector("#accept")
+                            .addEventListener("click", () => {
+                                handleClickBtn();
+                                modal
+                                    .querySelector(".modal-backdrop button")
+                                    .click();
+                            });
                     }
                 }}
             >
@@ -47,7 +72,10 @@ export const TableMobile = ({ table }) => {
                     <div className="text-black">Staff: Lee Do</div>
                 </div>
             </button>
-            {currentStatus && <ModalDetailTable table={table} handleMobile={handleMobile}/>}
+            {currentStatus && (
+                <ModalDetailTable table={table} handleMobile={handleMobile} />
+            )}
+            <ModalComfirmTable id={table._id} />
         </>
     );
 };
