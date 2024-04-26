@@ -9,7 +9,7 @@ const UserWaitingList = () => {
     const arrUser = []
     useEffect(() => {
         (async () => {
-            const { data } = await instance.get('/division/user')
+            const { data } = await instance.get('/division/table')
             // console.log(data);
             setUsers(data)
         })()
