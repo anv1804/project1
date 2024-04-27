@@ -10,6 +10,10 @@ const tableSchema = mongoose.Schema({
     isset: {
         type: Boolean
     },
+    operatingTime: {
+        type: Number
+    }
+    ,
     userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "users",

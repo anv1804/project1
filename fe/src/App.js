@@ -13,19 +13,27 @@ import { isExpired, decodeToken } from "react-jwt";
 import { jwtDecode } from "jwt-decode";
 import Home from "./pages/Home.js";
 import NotFound from "./pages/NotFound.js";
+import { getTables } from "./apis/table.api.ts";
 function App() {
-  const [users, setUsers] = useState([])
-  const navigate = useNavigate()
+  const [listTables, setListTables] = useState([]);
   useEffect(() => {
-    ; (async () => {
-      const data = await getUsers()
-      setUsers(data)
-    })()
-  }, [])
-  useEffect(() => {
-
-
+    (async () => {
+      const data = await getTables();
+      setListTables(data);
+    })();
   }, []);
+  // const [users, setUsers] = useState([])
+  // const navigate = useNavigate()
+  // useEffect(() => {
+  //   ; (async () => {
+  //     const data = await getUsers()
+  //     setUsers(data)
+  //   })()
+  // }, [])
+  // useEffect(() => {
+
+
+  // }, []);
 
   return (
     <>

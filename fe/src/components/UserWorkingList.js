@@ -19,7 +19,7 @@ const UserWorkingList = () => {
   }, []);
   (async () => {
     await users.map((item) => {
-      if (item.role == 1 && item.status == true) {
+      if (item.role === 1 && item.status === true) {
         arrUser.push(item);
       }
     })
@@ -42,7 +42,7 @@ const UserWorkingList = () => {
             {/* row 1 */}
             {
               arrUser.map((item) => (
-                <tr key={item.id} className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+                <tr key={item._id} className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                   <td>
                     <div className="flex items-center gap-2">
                       <div className="avatar">

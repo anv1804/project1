@@ -21,7 +21,7 @@ export const getTableById = async (id: string) => {
   }
 };
 
-export const getTableByName = async (name : string) => {
+export const getTableByName = async (name: string) => {
   try {
     const { data } = await instance.get(`/table/name/${name}`);
     // console.log(data);
@@ -29,7 +29,7 @@ export const getTableByName = async (name : string) => {
   } catch (error) {
     console.log(error);
   }
-}
+};
 
 export const updateTable = async (id: any, table: any) => {
   try {
@@ -43,7 +43,6 @@ export const updateTable = async (id: any, table: any) => {
 export const createTable = async (table: TTable) => {
   try {
     const { data } = await instance.post(`/table`, table);
-    console.log(data);
     return data;
   } catch (error) {
     console.log(error);

@@ -13,7 +13,7 @@ export const SearchTable = ({ onShowSearchResult, onRenderResult }) => {
     useEffect(() => {
         (async () => {
             let data = await getTableByName(searchValue);
-            console.log(data.length);
+            // console.log(data.length);
             setSearchResult(() => {
                 if (data.length > 0) {
                     return [...data];

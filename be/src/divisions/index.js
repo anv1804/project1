@@ -5,19 +5,18 @@ import userId from '../models/user.model.js'
 
 // => trả về những bàn đã mở nhưng chưa có nhân viên làm
 export const tableIsset = (req, res) => {
-    const tableId = req.params.id
     const hour = new Date().getHours()
     const min = new Date().getMinutes()
     const sec = new Date().getSeconds()
     const timer = hour * 3600 + min * 60 + sec
-    console.log(timer - 16 * 60);
-
+    console.log(timer);
     const arrIsset = []
     const arr2 = [];
     User.find({ status: false, role: 1 })
         .then((data) => {
             if (data) {
                 data.map((item) => {
+                    // console.log(item);
                     if (item.countWork > 0 && (timer - item.timeRest >= 900)) {
                         arrIsset.push(item)
                         arrIsset.sort((a, b) => {
@@ -50,11 +49,11 @@ export const tableIsset = (req, res) => {
             }
             const result = arrIsset
             res.json(result);
-
         })
         .catch((err) => {
             res.json(err);
         });
+
 }
 // => trả về những nhân viên đang trong ca nghỉ và thời gian ca nghỉ >= 15p
 export const userIsset = (req, res) => {
@@ -104,17 +103,26 @@ export const userIsset = (req, res) => {
             const result = arrIsset[0]
             // res.json(result);
             if (result.length !== 0) {
-                const data = {
-                    isset: true,
+                const data1 = {
+                    isset: !result.isset,
                     userId: result.id
                 }
-                Table.findByIdAndUpdate(tableId, data, { new: true }).populate('userId')
-                    .then((data) => {
-                        res.json(data);
+                // res.json(tableId);
+                User.findByIdAndUpdate(result.id, { status: !result.status }, { new: true })
+                    // Table.findByIdAndUpdate(tableId, data, { new: true }).populate('userId')
+                    .then(() => {
+                        Table.findByIdAndUpdate(tableId, data1, { new: true }).populate('userId')
+                            .then((data) => {
+                                res.json(data);
+                            })
+                            .catch((err) => {
+                                res.json(err);
+                            });
                     })
                     .catch((err) => {
                         res.json(err);
                     });
+
 
             }
         })

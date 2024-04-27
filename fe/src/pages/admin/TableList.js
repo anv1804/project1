@@ -10,7 +10,7 @@ const TableList = () => {
     const [listTables, setListTables] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [mobile, setMobile] = useState(false);
-    const [renderResult , setRenderResult] = useState(0);
+    const [renderResult, setRenderResult] = useState(0);
 
     const countPage = Math.floor(listTables.length / 6);
 
@@ -44,9 +44,9 @@ const TableList = () => {
         let valueName = elementTableName.current.value;
 
         if (valueName.trim()) {
-            const data = await createTable({ name: valueName, status: false });
+            const data = await createTable({ name: `Table ${valueName}`, status: false });
             document.querySelector("#btnCloseModalCreate").click();
-            setListTables([data, ...listTables]);
+            setListTables([...listTables, data]);
             setCurrentPage(0);
             elementTableName.current.value = "";
             return;

@@ -2,7 +2,11 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'bg-poker': "url('https://wordpresscdn.winzogames.com/prod/blog/wp-content/uploads/2022/03/21122310/POKER-1.jpg')",
+      }
+    },
 
   },
   plugins: [require("daisyui")],

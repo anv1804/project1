@@ -10,14 +10,13 @@ const UserWaitingList = () => {
     useEffect(() => {
         (async () => {
             const { data } = await instance.get('/division/table')
-            // console.log(data);
             setUsers(data)
         })()
 
     }, []);
     (async () => {
         await users.map((item) => {
-            if (item.role == 1 && item.status == false) {
+            if (item.role === 1 && item.status === false) {
                 arrUser.push(item);
             }
         })

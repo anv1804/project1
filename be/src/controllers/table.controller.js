@@ -35,8 +35,8 @@ export const getTableByName = (req, res) => {
     const name = req.params.name;
     if (name) {
         Table.find({
-            '$or' : [
-                {name : {$regex: name}}
+            '$or': [
+                { name: { $regex: name } }
             ]
         })
             .then((data) => {
@@ -54,6 +54,9 @@ export const getTableByName = (req, res) => {
 // [POST] : add new table
 export const addTable = (req, res) => {
     const data = req.body;
+    data.isset = false
+    data.userId = "662a3baeba5446a888ffaccc"
+    data.operatingTime = 0
     if (data && data !== '') {
         Table.create(data)
             .then((data) => {
