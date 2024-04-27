@@ -20,25 +20,13 @@ export const tableIsset = (req, res) => {
                     if (item.countWork > 0 && (timer - item.timeRest >= 900)) {
                         arrIsset.push(item)
                         arrIsset.sort((a, b) => {
-                            if (a.countRest !== b.countRest) {
-                                // Nếu countRest khác nhau, sắp xếp tăng dần theo countRest
-                                return a.countRest - b.countRest;
-                            } else {
-                                // Nếu countRest giống nhau, sắp xếp giảm dần theo timeRest
-                                return b.timeRest - a.timeRest;
-                            }
+                            return b.timeRest - a.timeRest;
                         });
                     }
                     else if (item.countWork == 0) {
                         arr2.unshift(item)
                         arr2.sort((a, b) => {
-                            if (a.countRest !== b.countRest) {
-                                // Nếu countRest khác nhau, sắp xếp tăng dần theo countRest
-                                return a.countRest - b.countRest;
-                            } else {
-                                // Nếu countRest giống nhau, sắp xếp giảm dần theo timeRest
-                                return b.timeRest - a.timeRest;
-                            }
+                            return b.timeRest - a.timeRest;
                         });
                         // nếu ca làm của nhân viên là 0 thì sẽ được xếp lên đầu danh sách
                         arrIsset.unshift(...arr2)
@@ -135,62 +123,22 @@ export const tableIsset = (req, res) => {
 // }
 // chức năng thay người 
 export const userIsset = (req, res) => {
-    const tableId = req.params.id
-    const hour = new Date().getHours()
-    const min = new Date().getMinutes()
-    const sec = new Date().getSeconds()
-    const timer = hour * 3600 + min * 60 + sec
-    // console.log(timer - 16 * 60);
-
-    const arrWork = []
     const arrRest = [];
-    const arr2 = [];
-
     User.find({ status: true, role: 1 })
         .then((data) => {
             if (data) {
-                data.map((item) => {
-                    arrWork.push(item)
-                    arrWork.sort((a, b) => {
-                        return b.timeWork - a.timeWork;
-                    });
-                    User.find({ status: false, role: 1 })
-                        .then((data) => {
-                            if (data) {
-                                data.map((item) => {
-
-                                    if (item.countWork > 0 && (timer - item.timeRest >= 900)) {
-                                        arrRest.push(item)
-                                        arrRest.sort((a, b) => {
-                                            return b.timeRest - a.timeRest;
-                                        })
-
-                                    } else if (item.countWork == 0) {
-                                        arr2.push(item)
-                                        arr2.sort((a, b) => {
-                                            return b.timeRest - a.timeRest;
-
-                                        });
-                                        // nếu ca làm của nhân viên là 0 thì sẽ được xếp lên đầu danh sách
-                                        arrRest.unshift(...arr2)
-                                    }
-                                })
-                                if (arrRest.length !== 0 && arrWork.length !== 0) {
-                                    const userWorkMax = arrWork[0]
-                                    const userRestMax = arrRest[0]
-                                    if (userWorkMax.timeWork + userRestMax.timeRest >= 80) {
-                                        res.json(userRestMax)
-                                    } else {
-                                        res.json("")
-                                    }
-
-                                }
-                            }
-                        })
-                        .catch((err) => {
-                            res.json(err);
+                data.forEach((item) => {
+                    if (item.countWork == 0) {
+                        res.json(item)
+                    }
+                    if (item.timeRest > 0) {
+                        arrRest.push(item)
+                        arrRest.sort((a, b) => {
+                            return b.timeRest - a.timeRest;
                         });
+                    }
                 })
+                res.json(arrRest[0])
             } else {
                 res.json({ message: 'Không có dữ liệu' });
             }
