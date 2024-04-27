@@ -38,7 +38,6 @@ export const register = async (req, res) => {
     data.role = 1;
     data.status = false;
     data.countWork = 0;
-    data.countRest = 0;
     data.timeRest = 0;
     data.timeWork = 0;
     data.avatar = "https://picsum.photos/200"

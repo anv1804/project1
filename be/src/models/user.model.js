@@ -16,9 +16,6 @@ const userSchema = mongoose.Schema({
     countWork: {
         type: Number,
     },
-    countRest: {
-        type: Number
-    },
     timeWork: {
         type: Number
     },
