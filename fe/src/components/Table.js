@@ -1,49 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { Link } from "react-router-dom";
 
 import CountDown from "./CountDown";
-import { getTables, updateTable } from "../apis/table.api.ts";
+import {  updateTable } from "../apis/table.api.ts";
 import { ModalComfirmTable } from "./ModalComfirmTable.js";
 import instance from "../apis/index.api.ts";
-import { updateUsers } from "../apis/user.api.ts";
 
-const Table = ({ table, mobile = false, onMobile = () => { } }) => {
+const Table = ({ table, mobile = false, onMobile = () => {} }) => {
     const [currentStatus, setcurrentStatus] = useState(table.status);
     const [currentTable, setCurrentTable] = useState(table);
 
     const handleClickBtn = async (e) => {
-        // const { data } = await instance.get(`/division/user/table`)
-        // const result = await getTables()
-        // console.log(table._id);
+
         if (currentStatus === false) {
-            (async () => {
-                const { data } = await instance.get(`/division/user/${table._id}`)
-                // const result = await getTables()
-                console.log(data);
-                await updateTable(table._id, { status: !currentStatus, });
-                setCurrentTable(data)
-
-            })()
-        } else if (currentStatus == true) {
-            (async () => {
-                await updateUsers(table?.userId._id,
-                    {
-                        status: !table?.userId.status,
-                    }
-                );
-            })()
-            const data = await updateTable(table._id,
-                {
-                    status: !currentStatus,
-                    userId: "666a6baebea444a888fffccc",
-                    operatingTime: 0
-                }
-            );
-
-            setCurrentTable(data)
-
-            // setCurrentTable(data)
-
+            const { data } = await instance.get(`/division/user`);
+            console.log(data);
+            setCurrentTable(data);
+        } else {
+            const { data } = await updateTable(currentTable._id , {
+                status: false,
+                operatingTime: 0,
+                userId: 'sdfsdarstsdfga'
+            });
+            setCurrentTable(data);
         }
         if (mobile) {
             onMobile(e, table._id);
@@ -81,12 +60,16 @@ const Table = ({ table, mobile = false, onMobile = () => { } }) => {
                         <div className="flex items-center">
                             <img
                                 className="flex-shrink-0 object-cover w-10 h-10 rounded-full"
-                                src={currentTable.userId?.avatar ?? "https://cdnphoto.dantri.com.vn/AsZEMGiIKmiQUzQ3AeQo8679mA0=/thumb_w/1020/2024/03/20/20151023204134-poker-game-gambling-gamble-cards-money-chips-game-1710913967019.jpeg"}
+                                src={
+                                    currentTable.userId?.avatar ??
+                                    "https://cdnphoto.dantri.com.vn/AsZEMGiIKmiQUzQ3AeQo8679mA0=/thumb_w/1020/2024/03/20/20151023204134-poker-game-gambling-gamble-cards-money-chips-game-1710913967019.jpeg"
+                                }
                                 alt=""
                             />
                             <div className="ml-3">
                                 <p className="text-base font-semibold text-gray-800 truncate">
-                                    {currentTable.userId?.fullname ?? "Empty Table"}
+                                    {currentTable.userId?.fullname ??
+                                        "Empty Table"}
                                 </p>
                                 <p className="text-base text-gray-500 truncate">
                                     Staff
@@ -99,25 +82,32 @@ const Table = ({ table, mobile = false, onMobile = () => { } }) => {
                         <button
                             className={`btn btn-active btn-${btn} text-white flex-1`}
                             onClick={(e) => {
-
-                                const modal =
-                                    document.getElementById(`${table._id + '1'}`);
+                                const modal = document.getElementById(
+                                    `${table._id + "1"}`
+                                );
 
                                 modal.showModal();
 
-                                modal.querySelector("#deny").addEventListener('click', () => {
-                                    modal
-                                        .querySelector(".modal-backdrop button")
-                                        .click();
-                                })
+                                modal
+                                    .querySelector("#deny")
+                                    .addEventListener("click", () => {
+                                        modal
+                                            .querySelector(
+                                                ".modal-backdrop button"
+                                            )
+                                            .click();
+                                    });
 
-                                modal.querySelector("#accept").addEventListener('click', () => {
-                                    handleClickBtn(e);
-                                    modal
-                                        .querySelector(".modal-backdrop button")
-                                        .click();
-                                })
-
+                                modal
+                                    .querySelector("#accept")
+                                    .addEventListener("click", () => {
+                                        handleClickBtn(e);
+                                        modal
+                                            .querySelector(
+                                                ".modal-backdrop button"
+                                            )
+                                            .click();
+                                    });
                             }}
                         >
                             {currentStatus ? "Close table" : "Open table"}

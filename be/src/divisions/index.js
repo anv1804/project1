@@ -1,14 +1,15 @@
-import Table from '../models/table.model.js'
-import User from '../models/user.model.js';
-import userId from '../models/user.model.js'
-// Nếu số nhân viên và số bàn không thay đổi 
+import { uploadTable } from "../controllers/table.controller.js";
+import Table from "../models/table.model.js";
+import User from "../models/user.model.js";
+import userId from "../models/user.model.js";
+// Nếu số nhân viên và số bàn không thay đổi
 
 // => trả về những bàn đã mở nhưng chưa có nhân viên làm
 export const tableIsset = (req, res) => {
-    const hour = new Date().getHours()
-    const min = new Date().getMinutes()
-    const sec = new Date().getSeconds()
-    const timer = hour * 3600 + min * 60 + sec
+    const hour = new Date().getHours();
+    const min = new Date().getMinutes();
+    const sec = new Date().getSeconds();
+    const timer = hour * 3600 + min * 60 + sec;
     console.log(timer);
     const arrIsset = [];
     const arr2 = [];
@@ -17,32 +18,30 @@ export const tableIsset = (req, res) => {
             if (data) {
                 data.map((item) => {
                     // console.log(item);
-                    if (item.countWork > 0 && (timer - item.timeRest >= 900)) {
-                        arrIsset.push(item)
+                    if (item.countWork > 0 && timer - item.timeRest >= 900) {
+                        arrIsset.push(item);
                         arrIsset.sort((a, b) => {
                             return b.timeRest - a.timeRest;
                         });
-                    }
-                    else if (item.countWork == 0) {
-                        arr2.unshift(item)
+                    } else if (item.countWork == 0) {
+                        arr2.unshift(item);
                         arr2.sort((a, b) => {
                             return b.timeRest - a.timeRest;
                         });
                         // nếu ca làm của nhân viên là 0 thì sẽ được xếp lên đầu danh sách
-                        arrIsset.unshift(...arr2)
+                        arrIsset.unshift(...arr2);
                     }
-                })
+                });
             } else {
-                res.json({ message: 'Không có dữ liệu' });
+                res.json({ message: "Không có dữ liệu" });
             }
-            const result = arrIsset
+            const result = arrIsset;
             res.json(result);
         })
         .catch((err) => {
             res.json(err);
         });
-
-}
+};
 // => trả về những nhân viên đang trong ca nghỉ và thời gian ca nghỉ >= 15p
 // export const userIsset = (req, res) => {
 //     const tableId = req.params.id
@@ -111,7 +110,6 @@ export const tableIsset = (req, res) => {
 //                         res.json(err);
 //                     });
 
-
 //             } else {
 //                 res.json("Không có nhân viên đủ điều kiện làm");
 //             }
@@ -121,30 +119,47 @@ export const tableIsset = (req, res) => {
 //         });
 
 // }
-// chức năng thay người 
-export const userIsset = (req, res) => {
+// chức năng thay người
+const userIsset = () => {
     const arrRest = [];
+    let result;
     User.find({ status: true, role: 1 })
         .then((data) => {
             if (data) {
                 data.forEach((item) => {
                     if (item.countWork == 0) {
-                        res.json(item)
+                        result = 1;
                     }
                     if (item.timeRest > 0) {
-                        arrRest.push(item)
+                        arrRest.push(item);
                         arrRest.sort((a, b) => {
                             return b.timeRest - a.timeRest;
                         });
                     }
-                })
-                res.json(arrRest[0])
+                });
+                result = arrRest[0];
             } else {
-                res.json({ message: 'Không có dữ liệu' });
+                result = null;
             }
         })
         .catch((err) => {
-            res.json(err);
+            return err;
         });
+    return result;
+};
 
-}
+export const inSertTable = async (req, res) => {
+    let user = await userIsset();
+
+    console.log(user);
+
+    // if (user) {
+    //     Table.findByIdAndUpdate(user._id, user , { new: true })
+    //         .then((data) => {
+    //             res.json(data);
+    //         })
+    //         .catch((err) => {
+    //             res.json(err);
+    //         });
+    // }
+};

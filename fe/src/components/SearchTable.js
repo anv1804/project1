@@ -100,6 +100,7 @@ export const SearchTable = ({ onShowSearchResult, onRenderResult }) => {
                             fill="currentColor"
                             className="w-8 h-8 text-black cursor-pointer border-l-2 border-slate-300 pl-3"
                             onClick={() => {
+                                setSearchValue('');
                                 onShowSearchResult(searchResult);
                             }}
                         >

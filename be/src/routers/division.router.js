@@ -1,6 +1,6 @@
 import {
     tableIsset,
-    userIsset
+    inSertTable
 } from '../divisions/index.js';
 import express from 'express';
 
@@ -9,7 +9,7 @@ const router = express.Router();
 // get all Tables
 router.get('/table', tableIsset);
 // get user by id
-router.get('/user', userIsset);
+router.get('/user', inSertTable);
 
 
 export default router;

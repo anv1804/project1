@@ -12,7 +12,7 @@ const TableList = () => {
     const [mobile, setMobile] = useState(false);
     const [renderResult, setRenderResult] = useState(0);
 
-    const countPage = Math.floor(listTables.length / 6);
+    const countPage = Math.ceil(listTables.length / 6);
 
     const elementTableName = useRef();
 
@@ -39,13 +39,16 @@ const TableList = () => {
 
     const handleRender = () => {
         setRenderResult(Math.random(1000));
-    }
+    };
 
     const handleCreateTable = async () => {
         let valueName = elementTableName.current.value;
 
         if (valueName.trim()) {
-            const data = await createTable({ name: `Table ${valueName}`, status: false });
+            const data = await createTable({
+                name: `Table ${valueName}`,
+                status: false,
+            });
             document.querySelector("#btnCloseModalCreate").click();
             setListTables([...listTables, data]);
             setCurrentPage(0);
@@ -62,12 +65,7 @@ const TableList = () => {
             window.scrollTo(0, 0);
             return;
         }
-        let elementPagination = document.querySelector("#paginationTable");
-        if (elementPagination.offsetTop > 700) {
-            window.scrollTo(0, 0);
-        } else {
-            window.scrollTo(0, 200);
-        }
+        window.scrollTo(0, 200);
     };
 
     return (
@@ -132,7 +130,9 @@ const TableList = () => {
                                     currentPage * 6 === 0 ? 0 : currentPage * 6;
                                 let endPoint =
                                     startPoint === 0 ? 5 : startPoint + 5;
-                                {/* console.log(startPoint, endPoint, index) */ }
+                                {
+                                    /* console.log(startPoint, endPoint, index) */
+                                }
                                 if (startPoint <= index && endPoint >= index) {
                                     return !mobile ? (
                                         <Table key={item._id} table={item} />
@@ -151,7 +151,7 @@ const TableList = () => {
 
                     <div className="flex justify-center mt-6">
                         <div id="paginationTable" className="join border">
-                            {[...Array(countPage + 1)].map((e, i) => (
+                            {[...Array(countPage)].map((e, i) => (
                                 <Pagination
                                     key={i}
                                     countPage={i}
