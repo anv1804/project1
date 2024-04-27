@@ -5,23 +5,46 @@ import CountDown from "./CountDown";
 import { getTables, updateTable } from "../apis/table.api.ts";
 import { ModalComfirmTable } from "./ModalComfirmTable.js";
 import instance from "../apis/index.api.ts";
+import { updateUsers } from "../apis/user.api.ts";
 
 const Table = ({ table, mobile = false, onMobile = () => { } }) => {
     const [currentStatus, setcurrentStatus] = useState(table.status);
     const [currentTable, setCurrentTable] = useState(table);
 
     const handleClickBtn = async (e) => {
-        (async () => {
-            const { data } = await instance.get(`/division/user/${table._id}`)
-            // const result = await getTables()
-            console.log(data);
-            setCurrentTable(data)
-        })()
-
+        // const { data } = await instance.get(`/division/user/table`)
+        // const result = await getTables()
         // console.log(table._id);
-        await updateTable(table._id, {
-            status: !currentStatus,
-        });
+        if (currentStatus === false) {
+            (async () => {
+                const { data } = await instance.get(`/division/user/${table._id}`)
+                // const result = await getTables()
+                console.log(data);
+                await updateTable(table._id, { status: !currentStatus, });
+                setCurrentTable(data)
+
+            })()
+        } else if (currentStatus == true) {
+            (async () => {
+                await updateUsers(table?.userId._id,
+                    {
+                        status: !table?.userId.status,
+                    }
+                );
+            })()
+            const data = await updateTable(table._id,
+                {
+                    status: !currentStatus,
+                    userId: "666a6baebea444a888fffccc",
+                    operatingTime: 0
+                }
+            );
+
+            setCurrentTable(data)
+
+            // setCurrentTable(data)
+
+        }
         if (mobile) {
             onMobile(e, table._id);
             return;

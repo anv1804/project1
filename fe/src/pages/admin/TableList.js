@@ -134,7 +134,6 @@ const TableList = () => {
                                     startPoint === 0 ? 5 : startPoint + 5;
                                 {/* console.log(startPoint, endPoint, index) */ }
                                 if (startPoint <= index && endPoint >= index) {
-                                    console.log(item)
                                     return !mobile ? (
                                         <Table key={item._id} table={item} />
                                     ) : (
