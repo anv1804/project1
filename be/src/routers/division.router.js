@@ -9,7 +9,7 @@ const router = express.Router();
 // get all Tables
 router.get('/table', tableIsset);
 // get user by id
-router.get('/user', inSertTable);
+router.get('/user/:id', inSertTable);
 
 
 export default router;

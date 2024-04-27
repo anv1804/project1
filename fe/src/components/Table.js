@@ -10,10 +10,12 @@ const Table = ({ table, mobile = false, onMobile = () => {} }) => {
     const [currentStatus, setcurrentStatus] = useState(table.status);
     const [currentTable, setCurrentTable] = useState(table);
 
+    // console.log(table);
+
     const handleClickBtn = async (e) => {
 
         if (currentStatus === false) {
-            const { data } = await instance.get(`/division/user`);
+            const { data } = await instance.get(`/division/user/${currentTable._id}`);
             console.log(data);
             setCurrentTable(data);
         } else {

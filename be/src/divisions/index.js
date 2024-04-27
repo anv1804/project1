@@ -120,15 +120,16 @@ export const tableIsset = (req, res) => {
 
 // }
 // chức năng thay người
-const userIsset = () => {
+const userIsset = (callback) => {
     const arrRest = [];
-    let result;
-    User.find({ status: true, role: 1 })
+    let result = {};
+
+    User.find({ status: true, role: 1 }).populate("userId")
         .then((data) => {
             if (data) {
                 data.forEach((item) => {
                     if (item.countWork == 0) {
-                        result = 1;
+                        result = item;
                     }
                     if (item.timeRest > 0) {
                         arrRest.push(item);
@@ -137,29 +138,43 @@ const userIsset = () => {
                         });
                     }
                 });
-                result = arrRest[0];
+                if (result) {
+                    return result;
+                }
+                console.log(arrRest[0]);
+                return arrRest[0];
             } else {
-                result = null;
+                return null;
             }
         })
+        .then(callback)
         .catch((err) => {
             return err;
         });
-    return result;
 };
 
 export const inSertTable = async (req, res) => {
-    let user = await userIsset();
+    const tableId = req.params.id;
+    const currnetTime = new Date();
 
-    console.log(user);
-
-    // if (user) {
-    //     Table.findByIdAndUpdate(user._id, user , { new: true })
-    //         .then((data) => {
-    //             res.json(data);
-    //         })
-    //         .catch((err) => {
-    //             res.json(err);
-    //         });
-    // }
+    userIsset((user) => {
+        console.log(user , 'sadsad');
+        if (user) {
+            Table.findByIdAndUpdate(
+                tableId,
+                {
+                    status: true,
+                    operatingTime : currnetTime,
+                    userId: user._id
+                },
+                { new: true }
+            )
+                .then((data) => {
+                    res.json(data);
+                })
+                .catch((err) => {
+                    res.json(err);
+                });
+        }
+    });
 };

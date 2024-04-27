@@ -11,7 +11,7 @@ const tableSchema = mongoose.Schema({
         type: Boolean
     },
     operatingTime: {
-        type: Number
+        type: String
     }
     ,
     userId: {
