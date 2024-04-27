@@ -8,12 +8,15 @@ import instance from "../apis/index.api.ts";
 
 const Table = ({ table, mobile = false, onMobile = () => { } }) => {
     const [currentStatus, setcurrentStatus] = useState(table.status);
-    const [userIsset, setuserIsset] = useState([]);
-    const [triggerEffect, setTriggerEffect] = useState(false);
-
-    ;
+    const [currentTable, setCurrentTable] = useState(table);
 
     const handleClickBtn = async (e) => {
+        (async () => {
+            const { data } = await instance.get(`/division/user/${table._id}`)
+            // const result = await getTables()
+            console.log(data);
+            setCurrentTable(data)
+        })()
 
         // console.log(table._id);
         await updateTable(table._id, {
@@ -23,20 +26,8 @@ const Table = ({ table, mobile = false, onMobile = () => { } }) => {
             onMobile(e, table._id);
             return;
         }
-        setTriggerEffect(prev => !prev);
         setcurrentStatus(!currentStatus);
     };
-    useEffect(() => {
-        if (triggerEffect) {
-            (async () => {
-                const { data } = await instance.get(`/division/user/${table._id}`)
-                // const result = await getTables()
-                console.log(data);
-                setuserIsset(table)
-            })()
-
-        }
-    }, [triggerEffect])
     let [bg, border, btn] = ["bg-white-300", "border-dark-600", "success"];
     if (currentStatus) {
         [bg, border, btn] = ["bg-sky-300", "border-sky-600", "error"];
@@ -58,7 +49,7 @@ const Table = ({ table, mobile = false, onMobile = () => { } }) => {
                                 <div className="absolute top-3 right-20 group-hover:top-12 group-hover:-right-12 z-10 w-32 h-32 rounded-full group-hover:scale-150 group-hover:opacity-50 duration-500 bg-sky-800"></div>
                                 <div className="absolute top-3 right-20 group-hover:top-12 group-hover:-right-12 z-10 w-24 h-24 rounded-full group-hover:scale-150 group-hover:opacity-50 duration-500 bg-sky-700"></div>
                                 <div className="absolute top-3 right-20 group-hover:top-12 group-hover:-right-12 z-10 w-14 h-14 rounded-full group-hover:scale-150 group-hover:opacity-50 duration-500 bg-sky-600"></div>
-                                <p className="z-10">{table.name}</p>
+                                <p className="z-10">{currentTable.name}</p>
                             </Link>
                         </blockquote>
                     </div>
@@ -67,12 +58,12 @@ const Table = ({ table, mobile = false, onMobile = () => { } }) => {
                         <div className="flex items-center">
                             <img
                                 className="flex-shrink-0 object-cover w-10 h-10 rounded-full"
-                                src={table.userId?.avatar ?? "https://cdnphoto.dantri.com.vn/AsZEMGiIKmiQUzQ3AeQo8679mA0=/thumb_w/1020/2024/03/20/20151023204134-poker-game-gambling-gamble-cards-money-chips-game-1710913967019.jpeg"}
+                                src={currentTable.userId?.avatar ?? "https://cdnphoto.dantri.com.vn/AsZEMGiIKmiQUzQ3AeQo8679mA0=/thumb_w/1020/2024/03/20/20151023204134-poker-game-gambling-gamble-cards-money-chips-game-1710913967019.jpeg"}
                                 alt=""
                             />
                             <div className="ml-3">
                                 <p className="text-base font-semibold text-gray-800 truncate">
-                                    {table.userId?.fullname ?? "Empty Table"}
+                                    {currentTable.userId?.fullname ?? "Empty Table"}
                                 </p>
                                 <p className="text-base text-gray-500 truncate">
                                     Staff

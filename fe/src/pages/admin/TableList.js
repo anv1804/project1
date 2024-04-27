@@ -19,6 +19,7 @@ const TableList = () => {
     useEffect(() => {
         (async () => {
             const data = await getTables();
+            // console.log(data);
             setListTables(data);
         })();
     }, [renderResult]);
@@ -130,8 +131,10 @@ const TableList = () => {
                                 let startPoint =
                                     currentPage * 6 === 0 ? 0 : currentPage * 6;
                                 let endPoint =
-                                    startPoint === 0 ? 5 : startPoint + 6;
+                                    startPoint === 0 ? 5 : startPoint + 5;
+                                {/* console.log(startPoint, endPoint, index) */ }
                                 if (startPoint <= index && endPoint >= index) {
+                                    console.log(item)
                                     return !mobile ? (
                                         <Table key={item._id} table={item} />
                                     ) : (
@@ -141,6 +144,7 @@ const TableList = () => {
                                         />
                                     );
                                 }
+
                                 return null;
                             })}
                         </div>
