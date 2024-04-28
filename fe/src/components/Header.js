@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import ReactDOM from "react-dom/client";
-const Header = () => {
+const Header = (token) => {
   const navigate = useNavigate()
   const Logout = () => {
     sessionStorage.clear("token");
     navigate('/login');
   }
-  const singed = document.getElementById("singed");
+  // const singed = document.getElementById("singed");
   // singed.style.display = "none";
   useEffect(() => {
 
@@ -84,35 +84,41 @@ const Header = () => {
               </svg>
             </button>
             <div className="hidden lg:flex lg:items-center lg:space-x-10">
-              <Link
-                id="signin"
-                to={`/login`}
-                className="flex items-center justify-center text-black"
-              >
-                Sign in
-              </Link>
-              <div className="dropdown dropdown-bottom dropdown-end">
-                <div tabIndex={0} role="button" className="avatar online">
-                  <div className="w-10 rounded-full">
-                    <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+              {
+                !token &&
+                <Link
+                  id="signin"
+                  to={`/login`}
+                  className="flex items-center justify-center text-black"
+                >
+                  Sign in
+                </Link>
+              }
+              {
+                token &&
+                <div className="dropdown dropdown-bottom dropdown-end">
+                  <div tabIndex={0} role="button" className="avatar online">
+                    <div className="w-10 rounded-full">
+                      <img src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                    </div>
                   </div>
-                </div>
-                {/* <div tabIndex={0} role="button" className="btn m-1">Click</div> */}
-                <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
-                  <li>
-                    <button className="btn">Profile</button>
-                  </li>
-                  <li>
-                    <button className="btn">Setting</button>
-                  </li>
-                  <li>
-                    <button className="btn">Language</button>
-                  </li>
-                  <li>
-                    <button className="btn text-error text-bold" onClick={Logout}><strong>Logout</strong></button>
-                  </li>
-                </ul>
-              </div>
+                  {/* <div tabIndex={0} role="button" className="btn m-1">Click</div> */}
+                  <ul tabIndex={0} className="dropdown-content z-[1] menu p-2 shadow bg-base-100 rounded-box w-52">
+                    <li>
+                      <button className="btn">Profile</button>
+                    </li>
+                    <li>
+                      <button className="btn">Setting</button>
+                    </li>
+                    <li>
+                      <button className="btn">Language</button>
+                    </li>
+                    <li>
+                      <button className="btn text-error text-bold" onClick={Logout}><strong>Logout</strong></button>
+                    </li>
+                  </ul>
+                </div>}
+
               {/* <Link
                 id="singed"
                 to={"/login"}

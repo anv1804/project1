@@ -1,6 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import Footer from './Footer'
 
 const Message = () => {
+
+    useEffect(() => {
+        const lastest = document.getElementById('lastest');
+        lastest.scrollIntoView({ behavior: 'smooth' })
+    }, []);
     return (
         <>
             {/* component */}
@@ -88,7 +94,7 @@ const Message = () => {
                 </div>
                 <div
                     id="messages"
-                    className="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch"
+                    className="flex flex-col space-y-4 p-3 overflow-y-auto scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2 scrolling-touch pb-20"
                 >
                     <div className="chat chat-start">
                         <div className="chat-image avatar">
@@ -218,7 +224,7 @@ const Message = () => {
                         </div>
                         <div className="chat-bubble chat-bubble-warning">To be on the Council at your age.</div>
                     </div>
-                    <div className="chat chat-start">
+                    <div className="chat chat-start" id="lastest">
                         <div className="chat-image avatar">
                             <div className="w-10 rounded-full">
                                 <img alt="Tailwind CSS chat bubble component" src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
@@ -228,7 +234,7 @@ const Message = () => {
                         <div className="chat-bubble chat-bubble-error">It's never happened before.</div>
                     </div>
                 </div>
-                <div className="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
+                {/* <div className="border-t-2 border-gray-200 px-4 pt-4 mb-2 sm:mb-0">
                     <div className="relative flex">
                         <span className="absolute inset-y-0 flex items-center">
                             <button
@@ -336,7 +342,8 @@ const Message = () => {
                             </button>
                         </div>
                     </div>
-                </div>
+                </div> */}
+                <Footer />
             </div>
             <style
                 dangerouslySetInnerHTML={{

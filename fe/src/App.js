@@ -14,12 +14,13 @@ import Message from "./components/Message.js";
 import Contact from "./pages/Contact.js";
 function App() {
   const token = sessionStorage.getItem("token");
+
   return (
     <>
       <Routes path={`/`}>
         <Route path={`/message`} element={<Message />}></Route>
       </Routes>
-      <Header />
+      <Header token={token} />
       <div className="container mx-auto min-h-full">
         <Routes>
           <Route path={`/`}>

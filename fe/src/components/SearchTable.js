@@ -73,7 +73,7 @@ export const SearchTable = ({ onShowSearchResult, onRenderResult }) => {
                         <input
                             ref={eleInput}
                             type="text"
-                            className="grow pr-auto text-black"
+                            className="grow pr-auto outline-none text-black"
                             placeholder="Search"
                             value={searchValue}
                             onChange={(e) => handleInputValue(e)}
