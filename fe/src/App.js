@@ -14,6 +14,7 @@ import { jwtDecode } from "jwt-decode";
 import Home from "./pages/Home.js";
 import NotFound from "./pages/NotFound.js";
 import { getTables } from "./apis/table.api.ts";
+import Message from "./components/Message.js";
 function App() {
   const [listTables, setListTables] = useState([]);
   useEffect(() => {
@@ -37,6 +38,9 @@ function App() {
 
   return (
     <>
+      <Routes path={`/`}>
+        <Route path={`/message`} element={<Message />}></Route>
+      </Routes>
       <Header />
       <div className="container">
         <Routes>
