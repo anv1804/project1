@@ -4,7 +4,7 @@ const Message = () => {
     return (
         <>
             {/* component */}
-            <div className="flex-1 p:2 sm:p-6 w-full h-100vh justify-between flex flex-col h-screen fixed z-10 bg-white" >
+            <div className="flex-1 p:2 sm:p-6 w-full h-100vh justify-between flex flex-col h-screen fixed z-30 bg-white" >
                 <div className="flex sm:items-center justify-between py-3 border-b-2 border-gray-200">
                     <div className="relative flex items-center space-x-4">
                         <div className="relative pl-3" >

@@ -20,22 +20,6 @@ const Dashboard = () => {
       const data = await getUsers()
       setUsers(data)
     })()
-    // console.log(users);
-    // const token = sessionStorage.getItem("token");
-    // const { decodedToken, isExpired, reEvaluateToken } = useJwt(token);
-    // console.log("");
-    // if (token !== null) {
-    //   const checkIdUser = jwtDecode(token);
-    //   const idUser = checkIdUser.id;
-    //   console.log("");
-    //   (async () => {
-    //     const data = await getUserById(idUser);
-    //     // console.log(data.role);
-    //     if (!data || data.role !== 3) {
-    //       navigate("/home");
-    //     }
-    //   })();
-    // }
   }, []);
 
   return (

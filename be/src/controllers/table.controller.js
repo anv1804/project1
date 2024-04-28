@@ -38,7 +38,7 @@ export const getTableByName = (req, res) => {
             '$or': [
                 { name: { $regex: name } }
             ]
-        })
+        }).populate("userId")
             .then((data) => {
                 res.json(data);
             })

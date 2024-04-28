@@ -42,7 +42,7 @@ function App() {
         <Route path={`/message`} element={<Message />}></Route>
       </Routes>
       <Header />
-      <div className="container">
+      <div className="container mx-auto min-h-full py-5 px-10">
         <Routes>
           <Route path={`/`}>
             <Route path={`/home`} element={<Home />}></Route>
