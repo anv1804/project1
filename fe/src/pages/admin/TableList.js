@@ -19,7 +19,6 @@ const TableList = () => {
     useEffect(() => {
         (async () => {
             const data = await getTables();
-            // console.log(data);
             setListTables(data);
         })();
     }, [renderResult]);
@@ -59,13 +58,15 @@ const TableList = () => {
         elementTableName.current.focus();
     };
 
-    const handlePagination = (e) => {
+    const handlePagination = async (e) => {
         setCurrentPage(Number(e.target.value));
         if (mobile) {
             window.scrollTo(0, 0);
             return;
         }
         window.scrollTo(0, 200);
+        const data = await getTables();
+        setListTables(data);
     };
 
     return (

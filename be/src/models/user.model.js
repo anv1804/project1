@@ -17,10 +17,10 @@ const userSchema = mongoose.Schema({
         type: Number,
     },
     timeWork: {
-        type: Number
+        type: String
     },
     timeRest: {
-        type: Number
+        type: String
     },
     status: {
         type: Boolean

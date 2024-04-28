@@ -2,7 +2,6 @@ import React, {  useState } from "react";
 import { Link } from "react-router-dom";
 
 import CountDown from "./CountDown";
-import {  updateTable } from "../apis/table.api.ts";
 import { ModalComfirmTable } from "./ModalComfirmTable.js";
 import instance from "../apis/index.api.ts";
 
@@ -10,19 +9,15 @@ const Table = ({ table, mobile = false, onMobile = () => {} }) => {
     const [currentStatus, setcurrentStatus] = useState(table.status);
     const [currentTable, setCurrentTable] = useState(table);
 
-    // console.log(table);
 
     const handleClickBtn = async (e) => {
 
         if (currentStatus === false) {
             const { data } = await instance.get(`/division/user/${currentTable._id}`);
-            console.log(data);
             setCurrentTable(data);
         } else {
-            const { data } = await updateTable(currentTable._id , {
-                status: false,
-                operatingTime: 0,
-                userId: 'sdfsdarstsdfga'
+            const { data } = await instance.put(`/division/user/${currentTable._id}` , {
+                userId: currentTable.userId._id
             });
             setCurrentTable(data);
         }
@@ -53,7 +48,7 @@ const Table = ({ table, mobile = false, onMobile = () => {} }) => {
                                 <div className="absolute top-3 right-20 group-hover:top-12 group-hover:-right-12 z-10 w-32 h-32 rounded-full group-hover:scale-150 group-hover:opacity-50 duration-500 bg-sky-800"></div>
                                 <div className="absolute top-3 right-20 group-hover:top-12 group-hover:-right-12 z-10 w-24 h-24 rounded-full group-hover:scale-150 group-hover:opacity-50 duration-500 bg-sky-700"></div>
                                 <div className="absolute top-3 right-20 group-hover:top-12 group-hover:-right-12 z-10 w-14 h-14 rounded-full group-hover:scale-150 group-hover:opacity-50 duration-500 bg-sky-600"></div>
-                                <p className="z-10">{currentTable.name}</p>
+                                <p className="z-10">{currentTable?.name}</p>
                             </Link>
                         </blockquote>
                     </div>
@@ -63,14 +58,14 @@ const Table = ({ table, mobile = false, onMobile = () => {} }) => {
                             <img
                                 className="flex-shrink-0 object-cover w-10 h-10 rounded-full"
                                 src={
-                                    currentTable.userId?.avatar ??
+                                    currentTable?.userId?.avatar ??
                                     "https://cdnphoto.dantri.com.vn/AsZEMGiIKmiQUzQ3AeQo8679mA0=/thumb_w/1020/2024/03/20/20151023204134-poker-game-gambling-gamble-cards-money-chips-game-1710913967019.jpeg"
                                 }
                                 alt=""
                             />
                             <div className="ml-3">
                                 <p className="text-base font-semibold text-gray-800 truncate">
-                                    {currentTable.userId?.fullname ??
+                                    {currentTable?.userId?.fullname ??
                                         "Empty Table"}
                                 </p>
                                 <p className="text-base text-gray-500 truncate">

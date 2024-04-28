@@ -24,7 +24,7 @@ export const SearchTable = ({ onShowSearchResult, onRenderResult }) => {
     }, [searchValue]);
 
     const handleHideResult = () => {
-        setShowResult(false);
+        setSearchValue('');
     };
 
     const handleInputValue = (e) => {
