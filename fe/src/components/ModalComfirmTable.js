@@ -1,6 +1,6 @@
-import React from "react";
+import React, { memo } from "react";
 
-export const ModalComfirmTable = ({id}) => {
+export const ModalComfirmTable = memo(({id}) => {
     return (
         <>
             <dialog id={id + "1"} className="modal modal-top mt-5">
@@ -46,4 +46,4 @@ export const ModalComfirmTable = ({id}) => {
             </dialog>
         </>
     );
-};
+});

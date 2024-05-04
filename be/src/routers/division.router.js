@@ -1,7 +1,7 @@
 import {
     tableIsset,
     inSertTable,
-    updateTable
+    putTable
 } from '../divisions/index.js';
 import express from 'express';
 
@@ -12,7 +12,7 @@ router.get('/table', tableIsset);
 // get user by id
 router.get('/user/:id', inSertTable);
 
-router.put('/user/:id', updateTable);
+router.put('/user/:id', putTable);
 
 
 export default router;

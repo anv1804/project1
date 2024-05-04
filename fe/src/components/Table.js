@@ -1,39 +1,66 @@
-import React, {  useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
 
 import CountDown from "./CountDown";
 import { ModalComfirmTable } from "./ModalComfirmTable.js";
 import instance from "../apis/index.api.ts";
+import { BtnTable } from "./BtnTable.js";
 
 const Table = ({ table, mobile = false, onMobile = () => {} }) => {
-    const [currentStatus, setcurrentStatus] = useState(table.status);
     const [currentTable, setCurrentTable] = useState(table);
 
-
     const handleClickBtn = async (e) => {
-
-        if (currentStatus === false) {
-            const { data } = await instance.get(`/division/user/${currentTable._id}`);
+        if (currentTable.status === false) {
+            const { data } = await instance.get(
+                `/division/user/${currentTable._id}`
+            );
+            if (!data) {
+                return;
+            }
             setCurrentTable(data);
         } else {
-            const { data } = await instance.put(`/division/user/${currentTable._id}` , {
-                userId: currentTable.userId._id
-            });
+            const { data } = await instance.put(
+                `/division/user/${currentTable._id}`,
+                {
+                    userId: currentTable.userId._id,
+                }
+            );
             setCurrentTable(data);
         }
         if (mobile) {
             onMobile(e, table._id);
-            return;
         }
-        setcurrentStatus(!currentStatus);
     };
+
     let [bg, border, btn] = ["bg-white-300", "border-dark-600", "success"];
-    if (currentStatus) {
+    if (currentTable.status) {
         [bg, border, btn] = ["bg-sky-300", "border-sky-600", "error"];
     }
     if (mobile) {
         [bg, border, btn] = ["", "", "error"];
     }
+
+    const handleTable = (e) => {
+        const modal = document.getElementById(`${currentTable._id + "1"}`);
+
+        modal.showModal();
+
+        modal.querySelector("#deny").addEventListener(
+            "click",
+            () => {
+                modal.querySelector(".modal-backdrop button").click();
+            },
+            { once: true }
+        );
+
+        modal.querySelector("#accept").addEventListener(
+            "click",
+            () => {
+                modal.querySelector(".modal-backdrop button").click();
+                handleClickBtn(e);
+            },
+            { once: true }
+        );
+    };
 
     return (
         <>
@@ -43,13 +70,13 @@ const Table = ({ table, mobile = false, onMobile = () => {} }) => {
                 <div className="flex flex-col justify-between flex-1 p-8">
                     <div className="flex-1">
                         <blockquote>
-                            <Link className="relative group cursor-pointer text-sky-50  overflow-hidden h-20 w-full rounded-md bg-bg-poker bg-cover p-2 flex justify-center items-center font-extrabold">
+                            <div className="relative group cursor-pointer text-sky-50  overflow-hidden h-20 w-full rounded-md bg-bg-poker bg-cover p-2 flex justify-center items-center font-extrabold">
                                 <div className="absolute top-3 right-20 group-hover:top-12 group-hover:-right-12 z-10 w-40 h-40 rounded-full group-hover:scale-150 group-hover:opacity-50 duration-500 bg-sky-900"></div>
                                 <div className="absolute top-3 right-20 group-hover:top-12 group-hover:-right-12 z-10 w-32 h-32 rounded-full group-hover:scale-150 group-hover:opacity-50 duration-500 bg-sky-800"></div>
                                 <div className="absolute top-3 right-20 group-hover:top-12 group-hover:-right-12 z-10 w-24 h-24 rounded-full group-hover:scale-150 group-hover:opacity-50 duration-500 bg-sky-700"></div>
                                 <div className="absolute top-3 right-20 group-hover:top-12 group-hover:-right-12 z-10 w-14 h-14 rounded-full group-hover:scale-150 group-hover:opacity-50 duration-500 bg-sky-600"></div>
                                 <p className="z-10">{currentTable?.name}</p>
-                            </Link>
+                            </div>
                         </blockquote>
                     </div>
                     <div className="mt-8">
@@ -65,8 +92,7 @@ const Table = ({ table, mobile = false, onMobile = () => {} }) => {
                             />
                             <div className="ml-3">
                                 <p className="text-base font-semibold text-gray-800 truncate">
-                                    {currentTable?.userId?.fullname ??
-                                        "Empty Table"}
+                                    {currentTable?.userId?.fullname ?? "Empty Table"}
                                 </p>
                                 <p className="text-base text-gray-500 truncate">
                                     Staff
@@ -75,44 +101,24 @@ const Table = ({ table, mobile = false, onMobile = () => {} }) => {
                         </div>
                     </div>
                     <div className="flex justify-between items-center gap-10 mt-5">
-                        {currentStatus && <CountDown />}
-                        <button
-                            className={`btn btn-active btn-${btn} text-white flex-1`}
-                            onClick={(e) => {
-                                const modal = document.getElementById(
-                                    `${table._id + "1"}`
-                                );
-
-                                modal.showModal();
-
-                                modal
-                                    .querySelector("#deny")
-                                    .addEventListener("click", () => {
-                                        modal
-                                            .querySelector(
-                                                ".modal-backdrop button"
-                                            )
-                                            .click();
-                                    });
-
-                                modal
-                                    .querySelector("#accept")
-                                    .addEventListener("click", () => {
-                                        handleClickBtn(e);
-                                        modal
-                                            .querySelector(
-                                                ".modal-backdrop button"
-                                            )
-                                            .click();
-                                    });
-                            }}
-                        >
-                            {currentStatus ? "Close table" : "Open table"}
-                        </button>
+                        {currentTable.status && <CountDown />}
+                        {currentTable.status ? (
+                            <BtnTable
+                                btn={btn}
+                                title={"Close table"}
+                                onTable={handleTable}
+                            />
+                        ) : (
+                            <BtnTable
+                                btn={btn}
+                                title={"Open table"}
+                                onTable={handleTable}
+                            />
+                        )}
                     </div>
                 </div>
             </div>
-            {!mobile && <ModalComfirmTable id={table._id} />}
+            {!mobile && <ModalComfirmTable id={currentTable._id} />}
         </>
     );
 };

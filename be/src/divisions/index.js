@@ -43,7 +43,7 @@ export const tableIsset = (req, res) => {
 
 // chức năng thay người
 const userIsset = (resolve) => {
-    const arrRest = [];
+    let obRest = null;
     User.find({ status: true, role: 1 })
         .then((data) => {
             if (data) {
@@ -51,16 +51,19 @@ const userIsset = (resolve) => {
                     if (item.countWork === 0) {
                         resolve(item);
                     }
-                    console.log(1);
-                    if (item.timeRest > 0) {
-                        arrRest.push(item);
-                        arrRest.sort((a, b) => {
-                            return new Date(b.timeRest)  > new Date(a.timeRest);
-                        });
+                    if (item.timeRest !== "0") {
+                        if (!obRest) {
+                            obRest = item;
+                        } else {
+                            let dateObRest = new Date(obRest.timeRest);
+                            let dateItem = new Date(item.timeRest);
+                            if (dateObRest > dateItem) {
+                                obRest = item;
+                            }
+                        }
                     }
                 });
-                console.log(arrRest);
-                resolve(arrRest[0]);
+                resolve(obRest);
             } else {
                 resolve(null);
             }
@@ -70,64 +73,83 @@ const userIsset = (resolve) => {
         });
 };
 
-const userIssetPromise = new Promise((resolve, reject) => {
-    userIsset(resolve);
-});
+const updateUser = (id, data, resolve) => {
+    User.findByIdAndUpdate(id, data, { new: true })
+        .then((data) => resolve(data))
+        .catch((err) => {
+            return err;
+        });
+};
+
+const updateTable = (id, data, resolve) => {
+    Table.findByIdAndUpdate(
+        id,
+        data,
+        { new: true }
+    ).populate("userId")
+    .then((data) => resolve(data))
+    .catch((err) => {
+        return err;
+    });
+};
 
 export const inSertTable = async (req, res) => {
     const tableId = req.params.id;
     const currnetTime = new Date();
 
-    const user = await userIssetPromise;
-
-    User.findByIdAndUpdate(user._id, {
-        countWork: 1,
-        timeRest: 0,
-        timeWork: currnetTime,
+    const user = await new Promise((resolve, reject) => {
+        userIsset(resolve);
     });
 
-    Table.findByIdAndUpdate(
-        tableId,
-        {
+    if (user) {
+        let dataUser = {
+            countWork: 1,
+            timeRest: "0",
+            timeWork: currnetTime,
+        };
+        await new Promise((resolve, reject) => {
+            updateUser(user._id, dataUser, resolve);
+        });
+
+        let dataTable = {
             status: true,
             operatingTime: currnetTime,
             userId: user._id,
-        },
-        { new: true }
-    )
-        .populate("userId")
-        .then((data) => {
-            res.json(data);
-        })
-        .catch((err) => {
-            res.json(err);
+        };
+
+        const table = await new Promise((resolve, reject) => {
+            updateTable(tableId, dataTable, resolve);
         });
+
+        res.json(table);
+    } else {
+        res.json(null);
+    }
 };
 
-export const updateTable = async (req, res) => {
+export const putTable = async (req, res) => {
     const tableId = req.params.id;
     const userId = req.body.userId;
 
     const currnetTime = new Date();
 
-    User.findByIdAndUpdate(userId, {
-        timeRest: currnetTime,
+    let dataUser = {
+        timeRest: `${currnetTime}`,
         timeWork: "0",
+    };
+    await new Promise((resolve, reject) => {
+        updateUser(userId, dataUser, resolve);
     });
 
-    Table.findByIdAndUpdate(
-        tableId,
-        {
-            status: false,
-            operatingTime: 0,
-            userId: "aaaaaaaaaaaaaaaaaaaaaaaa",
-        },
-        { new: true }
-    )
-        .then((data) => {
-            res.json(data);
-        })
-        .catch((err) => {
-            res.json(err);
-        });
+    let dataTable = {
+        status: false,
+        operatingTime: "0",
+        userId: "aaaaaaaaaaaaaaaaaaaaaaaa",
+    };
+
+    const table = await new Promise((resolve, reject) => {
+        updateTable(tableId , dataTable, resolve);
+    }); 
+
+    res.json(table);
 };
