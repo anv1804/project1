@@ -74,7 +74,8 @@ const userIsset = (resolve) => {
 };
 
 const updateUser = (id, data, resolve) => {
-    User.findByIdAndUpdate(id, data, { new: true })
+    User.findByIdAndUpdate(id, data,
+        { new: true })
         .then((data) => resolve(data))
         .catch((err) => {
             return err;
@@ -107,7 +108,7 @@ export const inSertTable = async (req, res) => {
             timeRest: "0",
             timeWork: currnetTime,
         };
-        await new Promise((resolve, reject) => {
+        await new Promise((resolve) => {
             updateUser(user._id, dataUser, resolve);
         });
 
@@ -117,7 +118,7 @@ export const inSertTable = async (req, res) => {
             userId: user._id,
         };
 
-        const table = await new Promise((resolve, reject) => {
+        const table = await new Promise((resolve) => {
             updateTable(tableId, dataTable, resolve);
         });
 
@@ -137,7 +138,7 @@ export const putTable = async (req, res) => {
         timeRest: `${currnetTime}`,
         timeWork: "0",
     };
-    await new Promise((resolve, reject) => {
+    await new Promise((resolve) => {
         updateUser(userId, dataUser, resolve);
     });
 
@@ -147,7 +148,7 @@ export const putTable = async (req, res) => {
         userId: "aaaaaaaaaaaaaaaaaaaaaaaa",
     };
 
-    const table = await new Promise((resolve, reject) => {
+    const table = await new Promise((resolve) => {
         updateTable(tableId , dataTable, resolve);
     }); 
 
