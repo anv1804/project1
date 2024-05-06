@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { getUsers } from "../apis/user.api.ts";
-import { useNavigate } from "react-router-dom";
 import StopWatch from "./StopWatch.js";
 import instance from "../apis/index.api.ts";
 
 const UserWaitingList = () => {
     const [users, setUsers] = useState([])
-    const arrUser = []
     useEffect(() => {
         (async () => {
             const { data } = await instance.get('/division/table')
@@ -14,13 +11,6 @@ const UserWaitingList = () => {
         })()
 
     }, []);
-    (async () => {
-        await users.map((item) => {
-            if (item.role === 1 && item.status === false) {
-                arrUser.push(item);
-            }
-        })
-    })()
     return (
         <>
             <div className="overflow-x-auto">
@@ -30,13 +20,12 @@ const UserWaitingList = () => {
                         <tr>
                             <th>Avatar</th>
                             <th>Name</th>
-                            <th>W/R</th>
-                            <th style={{ textAlign: "center" }}>TimeWorking</th>
+                            <th style={{ textAlign: "center" }}>TimeResting</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
-                            arrUser.map((item) => (
+                            users.map((item) => (
                                 <tr key={Math.random()} className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                                     <td>
                                         <div className="flex items-center gap-3">
@@ -56,13 +45,8 @@ const UserWaitingList = () => {
                                             <div className="text-sm opacity-50">Staff</div>
                                         </div>
                                     </td>
-                                    <td>
-
-                                        <strong className="text-sm text-warning ">{item.countWork}</strong>/
-                                        <strong className="text-sm text-success ">{item.countRest}</strong>
-                                    </td>
                                     <td style={{ textAlign: "center" }}>
-                                        <StopWatch />
+                                        <StopWatch timeString={item.timeRest} />
                                     </td>
                                 </tr>
                             ))
@@ -72,7 +56,6 @@ const UserWaitingList = () => {
                         <tr>
                             <th>Avatar</th>
                             <th>Name</th>
-                            <th>W/R</th>
                             <th style={{ textAlign: "center" }}>TimeWorking</th>
                         </tr>
                     </tfoot>

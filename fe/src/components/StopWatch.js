@@ -1,17 +1,24 @@
 import React, { useEffect, useRef, useState } from 'react'
 
-const StopWatch = () => {
+const StopWatch = (timeString) => {
+    const time = timeString.timeString
     const hour0 = new Date().getHours()
     const min0 = new Date().getMinutes()
     const sec0 = new Date().getSeconds()
-    const timer0 = hour0 * 3600 + min0 * 60 + sec0
+    const date = new Date(time);
+
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
+
+    const timer1 = hours * 3600 + minutes * 60 + seconds
+    const timer0 = (hour0 * 3600 + min0 * 60 + sec0) - timer1
+    // console.log(timer0);
 
     const [timer, setTimer] = useState(timer0);
     const [laps, setLaps] = useState([]);
     const [running, setRunning] = useState(false);
     const countRef = useRef(null);
-
-
 
     const handleStartStop = () => {
         if (running) {
@@ -23,53 +30,40 @@ const StopWatch = () => {
         }
         setRunning(!running);
     };
-
     const handleLap = () => {
         if (running) {
             setLaps([...laps, timer]);
         }
     };
-
     const handleReset = () => {
         clearInterval(countRef.current);
         setRunning(false);
         setTimer(timer0);
         setLaps([]);
     };
-
-    // const convertTime = (seconds) => {
-    //     const hours = Math.floor(seconds / 3600); // Tìm số giờ
-    //     const minutes = Math.floor((seconds % 3600) / 60); // Tìm số phút còn lại
-    //     const secs = seconds % 60; // Tìm số giây còn lại
-
-    //     // Padding 0 nếu giá trị dưới 10, ví dụ: '08' thay vì '8'
-    //     const paddedHours = hours.toString().padStart(2, '0');
-    //     const paddedMinutes = minutes.toString().padStart(2, '0');
-    //     const paddedSeconds = secs.toString().padStart(2, '0');
-
-    //     return `${paddedHours}:${paddedMinutes}:${paddedSeconds}`;
-    // }
     const formatTime = (timer) => {
-        const getSeconds = `0${timer % 60}`.slice(-2);
-        const minutes = `${Math.floor(timer / 60)}`;
+        const getSeconds = `0${timer % 60
+            }`.slice(-2);
+        const minutes = `${Math.floor(timer / 60)
+            }`;
         const getMinutes = `0${minutes % 60}`.slice(-2);
         const getHours = `0${Math.floor(timer / 3600)}`.slice(-2);
-
-        // return `${getHours}:${getMinutes}:${getSeconds}`
-        return Number(getHours) + Number(getMinutes) + Number(getSeconds)
-
+        return `${getHours}:${getMinutes}:${getSeconds}`
     };
     const getSeconds = (timer) => {
-        return `0${timer % 60} `.slice(-2);
+        return `0${timer % 60}`.slice(-2);
     }
     const getMinutes = (timer) => {
-        const minutes = `${Math.floor(timer / 60)} `;
-        return `0${minutes % 60} `.slice(-2);
+        const minutes = `${Math.floor(timer / 60)}`;
+        return `0${minutes % 60}`.slice(-2);
     }
     const getHours = (timer) => {
-        return `0${Math.floor(timer / 3600)} `.slice(-2);
+        return `0${Math.floor(timer / 3600)}`.slice(-2);
     }
     useEffect(() => {
+        countRef.current = setInterval(() => {
+            setTimer((timer) => timer + 1);
+        }, 1000);
         return () => clearInterval(countRef.current);
     }, []);
     return (
@@ -83,9 +77,8 @@ const StopWatch = () => {
                         <span style={{ "--value": getSeconds(timer) }}></span>
                     </span>
                 )
-
             }
-            {/* <button className="btn btn-success btn-sm text-white mx-1" onClick={handleStartStop}>{running ? 'Stop' : 'Start'}</button> */}
+            {/* <button className="btn btn-success btn-sm text-white mx-1" onClick={handleStartStop} >{running ? 'Stop' : 'Start'}</button> */}
             {/* <button className="btn btn-primary text-white" onClick={handleLap}>Lap</button> */}
             {/* <button className="btn btn-error btn-sm text-white" onClick={handleReset} >Reset</button> */}
             <ul>

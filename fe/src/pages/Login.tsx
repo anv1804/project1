@@ -3,10 +3,7 @@ import Joi from "joi";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { TUser } from "../interfaces/User";
 import instance from "../apis/index.api.ts";
-import { updateUsers } from "../apis/user.api.ts";
-import { jwtDecode } from "jwt-decode";
 
 const userSchema = Joi.object({
   email: Joi.string().required().email({ tlds: false }),

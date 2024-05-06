@@ -1,29 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { getUsers } from "../apis/user.api.ts";
-import { useNavigate } from "react-router-dom";
 import StopWatch from "./StopWatch.js";
-import { getTables } from "../apis/table.api.ts";
 
 const UserWorkingList = () => {
   const [users, setUsers] = useState([])
-  const arrUser = []
   useEffect(() => {
     (async () => {
       const data = await getUsers()
-      // const dataTable = await getTables()
-      // console.log(dataTable);
-      setUsers(data)
-
+      const arrUser = []
+      data.map((user) => {
+        if (user.status == true && user.timeWork != 0) {
+          arrUser.push(user)
+          arrUser.sort((a, b) => {
+            return b.timeWork - a.timeWork
+          })
+        }
+      })
+      setUsers(arrUser)
     })()
 
   }, []);
-  (async () => {
-    await users.map((item) => {
-      if (item.role === 1 && item.status === true) {
-        arrUser.push(item);
-      }
-    })
-  })()
   return (
     <>
       <div className="overflow-x-auto">
@@ -34,15 +30,14 @@ const UserWorkingList = () => {
               <th>Avatar</th>
               <th>Name</th>
               <th>Table</th>
-              <th>W/R</th>
               <th style={{ textAlign: "center" }}>Time</th>
             </tr>
           </thead>
           <tbody>
             {/* row 1 */}
             {
-              arrUser.map((item) => (
-                <tr key={item._id} className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
+              users.map((item) => (
+                <tr key={Math.random()} className="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
                   <td>
                     <div className="flex items-center gap-2">
                       <div className="avatar">
@@ -64,13 +59,8 @@ const UserWorkingList = () => {
                   <td>
                     <strong className="text-sm text-primary pl-3">1</strong>
                   </td>
-                  <td>
-
-                    <strong className="text-sm text-warning ">{item.countWork}</strong>/
-                    <strong className="text-sm text-success ">{item.countRest}</strong>
-                  </td>
                   <td style={{ textAlign: "center" }}>
-                    <StopWatch />
+                    <StopWatch timeString={item.timeWork} />
                   </td>
 
                 </tr>
@@ -84,7 +74,6 @@ const UserWorkingList = () => {
               <th>Avatar</th>
               <th>Name</th>
               <th>Table</th>
-              <th>W/R</th>
               <th style={{ textAlign: "center" }}>Time</th>
             </tr>
           </tfoot>

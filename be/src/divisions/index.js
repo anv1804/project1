@@ -4,19 +4,14 @@ import User from "../models/user.model.js";
 
 // => trả về những bàn đã mở nhưng chưa có nhân viên làm
 export const tableIsset = (req, res) => {
-    const hour = new Date().getHours();
-    const min = new Date().getMinutes();
-    const sec = new Date().getSeconds();
-    const timer = hour * 3600 + min * 60 + sec;
-    console.log(timer);
     const arrIsset = [];
     const arr2 = [];
-    User.find({ status: false, role: 1 })
+    User.find({ status: true, role: 1, timeWork: 0 })
         .then((data) => {
             if (data) {
                 data.map((item) => {
                     // console.log(item);
-                    if (item.countWork > 0 && timer - item.timeRest >= 900) {
+                    if (item.countWork > 0) {
                         arrIsset.push(item);
                         arrIsset.sort((a, b) => {
                             return b.timeRest - a.timeRest;
@@ -27,12 +22,12 @@ export const tableIsset = (req, res) => {
                             return b.timeRest - a.timeRest;
                         });
                         // nếu ca làm của nhân viên là 0 thì sẽ được xếp lên đầu danh sách
-                        arrIsset.unshift(...arr2);
                     }
                 });
             } else {
                 res.json({ message: "Không có dữ liệu" });
             }
+            arrIsset.unshift(...arr2);
             const result = arrIsset;
             res.json(result);
         })
@@ -88,10 +83,10 @@ const updateTable = (id, data, resolve) => {
         data,
         { new: true }
     ).populate("userId")
-    .then((data) => resolve(data))
-    .catch((err) => {
-        return err;
-    });
+        .then((data) => resolve(data))
+        .catch((err) => {
+            return err;
+        });
 };
 
 export const inSertTable = async (req, res) => {
@@ -149,8 +144,8 @@ export const putTable = async (req, res) => {
     };
 
     const table = await new Promise((resolve) => {
-        updateTable(tableId , dataTable, resolve);
-    }); 
+        updateTable(tableId, dataTable, resolve);
+    });
 
     res.json(table);
 };

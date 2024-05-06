@@ -1,16 +1,19 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import ReactDOM from "react-dom/client";
 const Header = (token) => {
+  const [check, setCheck] = useState([token.token])
   const navigate = useNavigate()
   const Logout = () => {
     sessionStorage.clear("token");
     navigate('/login');
   }
-  // const singed = document.getElementById("singed");
-  // singed.style.display = "none";
+  // console.log(token);
   useEffect(() => {
-
+    if (token.token === undefined || token.token === null) {
+      setCheck("")
+    } else {
+      setCheck(token.token)
+    }
   }, []);
   return (
     <header>
@@ -85,7 +88,7 @@ const Header = (token) => {
             </button>
             <div className="hidden lg:flex lg:items-center lg:space-x-10">
               {
-                !token &&
+                check == "" &&
                 <Link
                   id="signin"
                   to={`/login`}
@@ -95,7 +98,7 @@ const Header = (token) => {
                 </Link>
               }
               {
-                token &&
+                check &&
                 <div className="dropdown dropdown-bottom dropdown-end">
                   <div tabIndex={0} role="button" className="avatar online">
                     <div className="w-10 rounded-full">

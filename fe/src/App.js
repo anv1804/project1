@@ -14,13 +14,13 @@ import Message from "./components/Message.js";
 import Contact from "./pages/Contact.js";
 function App() {
   const token = sessionStorage.getItem("token");
-
   return (
     <>
       <Routes path={`/`}>
         <Route path={`/message`} element={<Message />}></Route>
       </Routes>
       <Header token={token} />
+
       <div className="container mx-auto min-h-full">
         <Routes>
           <Route path={`/`}>
@@ -28,17 +28,18 @@ function App() {
             <Route path={`/register`} element={<Register />}></Route>
             <Route path={`/login`} element={<Login />}></Route>
             <Route path={`/contact`} element={<Contact />}></Route>
-
           </Route>
+          {/* <Route path={`*`} element={<NotFound />}></Route> */}
+        </Routes>
+
+        <Routes>
           <Route path={`/admin`}>
             <Route path={`/admin/`} element={<Dashboard />}></Route>
             <Route path={`/admin/table`} element={<TableList />}></Route>
           </Route>
-          <Route path={`*`} element={<NotFound />}></Route>
-
+          {/* <Route path={`*`} element={<NotFound />}></Route> */}
         </Routes>
       </div>
-
       <Footer />
     </>
   );
