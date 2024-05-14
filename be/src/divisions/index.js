@@ -9,8 +9,11 @@ export const tableIsset = (req, res) => {
     User.find({ status: true, role: 1, timeWork: 0 })
         .then((data) => {
             if (data) {
-                data.map((item) => {
+                data.filter((item) => {
+                    return item.timeRest > 0;
                     // console.log(item);
+                });
+                data.map((item) => {
                     if (item.countWork > 0) {
                         arrIsset.push(item);
                         arrIsset.sort((a, b) => {
@@ -23,7 +26,7 @@ export const tableIsset = (req, res) => {
                         });
                         // nếu ca làm của nhân viên là 0 thì sẽ được xếp lên đầu danh sách
                     }
-                });
+                })
             } else {
                 res.json({ message: "Không có dữ liệu" });
             }
